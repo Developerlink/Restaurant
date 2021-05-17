@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GlobalConfig.cs" />
+    <Compile Include="HelperMethods.cs" />
     <Compile Include="Models\Area.cs" />
     <Compile Include="Models\ArrivalStatus.cs" />
     <Compile Include="Models\Chef.cs" />

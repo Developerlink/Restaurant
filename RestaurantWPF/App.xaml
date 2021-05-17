@@ -1,0 +1,13 @@
+﻿<Application x:Class="RestaurantWPF.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:RestaurantWPF"
+             StartupUri="Views/CreateTableView.xaml">
+    <Application.Resources>
+        <Style x:Key="InputLabel" TargetType="Label">
+            <Setter Property="FontSize" Value="30" />
+            <Setter Property="Margin" Value="10"/>
+        </Style>
+         
+    </Application.Resources>
+</Application>

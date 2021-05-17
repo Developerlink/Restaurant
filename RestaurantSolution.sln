@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestaurantLibrary", "Restau
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestaurantCL", "RestaurantCL\RestaurantCL.csproj", "{71723495-2EDB-44C5-9266-4B487A73402B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestaurantWPF", "RestaurantWPF\RestaurantWPF.csproj", "{3CC4D957-F608-4E66-91FE-D1219912F56E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{71723495-2EDB-44C5-9266-4B487A73402B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{71723495-2EDB-44C5-9266-4B487A73402B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{71723495-2EDB-44C5-9266-4B487A73402B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3CC4D957-F608-4E66-91FE-D1219912F56E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3CC4D957-F608-4E66-91FE-D1219912F56E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3CC4D957-F608-4E66-91FE-D1219912F56E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3CC4D957-F608-4E66-91FE-D1219912F56E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

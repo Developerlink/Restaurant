@@ -16,9 +16,9 @@ namespace RestaurantCL
 
             SqlConnector db = new SqlConnector(); 
 
-            DinnerTable newTable = new DinnerTable() {AreaId=2, Name="29", Seats=4 };
+            DinnerTable newTable = new DinnerTable("31");
 
-            //Console.WriteLine(db.CreateDinnerTable(newTable));
+            Console.WriteLine(db.CreateDinnerTable(newTable));
 
             
 

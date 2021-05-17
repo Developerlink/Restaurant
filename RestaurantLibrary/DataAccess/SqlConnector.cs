@@ -17,14 +17,13 @@ namespace RestaurantLibrary.DataAccess
         public int CreateDinnerTable(DinnerTable table)
         {
             // Name of stored procedure
-            string sql = "sp_dinner_tables_insert";
-            int tblId = 0;
+            string sp = "sp_dinner_tables_insert";
 
             try
             {
                 using (SqlConnection conn = new SqlConnection(GlobalConfig.ConnString(db)))
                 {
-                    using (SqlCommand cmd = new SqlCommand(sql, conn))
+                    using (SqlCommand cmd = new SqlCommand(sp, conn))
                     {
                         // Create INPUT parameters
                         cmd.Parameters.Add(new SqlParameter("@AreaId", table.AreaId));
@@ -39,7 +38,7 @@ namespace RestaurantLibrary.DataAccess
                         cmd.CommandType = CommandType.StoredProcedure;
                         conn.Open();
                         cmd.ExecuteNonQuery();
-                        tblId = (int)cmd.Parameters["@Id"].Value;
+                        table.Id = (int)cmd.Parameters["@Id"].Value;
 
                     }
                 }
@@ -49,7 +48,7 @@ namespace RestaurantLibrary.DataAccess
 
                 throw;
             }
-            return tblId;
+            return table.Id;
         }
 
 
