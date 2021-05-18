@@ -8,7 +8,7 @@ using RestaurantLibrary.Models;
 namespace RestaurantWPF.ViewModels
 {
     //public BindableCollection<DinnerTable> Tables { get; set; }
-    public class ReservationViewModel
+    public class ReservationOverviewViewModel
     {
     }
 }

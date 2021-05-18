@@ -56,12 +56,12 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ViewModels\CreateTableViewModel.cs" />
-    <Compile Include="ViewModels\ReservationViewModel.cs" />
+    <Compile Include="ViewModels\ReservationOverviewViewModel.cs" />
     <Compile Include="Views\CreateTableView.xaml.cs">
       <DependentUpon>CreateTableView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ReservationView.xaml.cs">
-      <DependentUpon>ReservationView.xaml</DependentUpon>
+    <Compile Include="Views\ReservationOverviewView.xaml.cs">
+      <DependentUpon>ReservationOverviewView.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -79,7 +79,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ReservationView.xaml">
+    <Page Include="Views\ReservationOverviewView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
