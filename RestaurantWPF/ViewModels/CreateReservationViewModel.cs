@@ -59,10 +59,12 @@ namespace RestaurantWPF.ViewModels
             }
         }
 
+        public string FirstName { get; set; } = "Peter";
+
 
         public ObservableCollection<DinnerTable> CurrentFreeTables;
 
-        public ObservableCollection<ArrivalStatus> ArrivalStatuses;
+        public List<ArrivalStatus> ArrivalStatuses { get; set; }
 
         private ArrivalStatus _SelectedArrivalStatus;
         public ArrivalStatus CurrentArrivalStatus
@@ -79,6 +81,7 @@ namespace RestaurantWPF.ViewModels
 
         public CreateReservationViewModel()
         {
+            ArrivalStatuses = new List<ArrivalStatus>();
             LoadData();
         }
 
@@ -86,7 +89,7 @@ namespace RestaurantWPF.ViewModels
         private void LoadData()
         {
             SqlConnector conn = new SqlConnector();
-            ArrivalStatuses = conn.GetArrivalStatuses().ToObservableCollection();
+            ArrivalStatuses = conn.GetArrivalStatuses();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -97,5 +100,6 @@ namespace RestaurantWPF.ViewModels
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
+
     }
 }
