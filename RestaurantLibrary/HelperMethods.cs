@@ -1,22 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace RestaurantLibrary
 {
-    public class HelperMethods
+    public static class HelperMethods
     {
-        Random rnd = new Random();
-
         // Returns a random item from a list of that item.
-        private T GetRandomItem<T>(T[] data)
+        public static T GetRandomItem<T>(T[] data)
         {
+            Random rnd = new Random();
             return data[rnd.Next(0, data.Length)];
         }
 
-        
+        public static ObservableCollection<T> ToObservableCollection<T>(this IEnumerable<T> coll)
+        {
+            var c = new ObservableCollection<T>();
+            foreach (var e in coll)
+            {
+                c.Add(e);
+            }
+            return c; 
+        }
+
+
 
     }
 }

@@ -55,8 +55,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\TimeConverter.cs" />
+    <Compile Include="ViewModels\CreateReservationViewModel.cs" />
     <Compile Include="ViewModels\CreateTableViewModel.cs" />
-    <Compile Include="ViewModels\ReservationViewModel.cs" />
     <Compile Include="Views\CreateReservationView.xaml.cs">
       <DependentUpon>CreateReservationView.xaml</DependentUpon>
     </Compile>
@@ -66,9 +67,7 @@
     <Compile Include="Views\EditReservationView.xaml.cs">
       <DependentUpon>EditReservationView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ReservationView.xaml.cs">
-      <DependentUpon>ReservationView.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="VMLocator.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -90,10 +89,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\EditReservationView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ReservationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

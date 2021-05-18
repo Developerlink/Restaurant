@@ -2,12 +2,16 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:RestaurantWPF"
+             xmlns:vm="clr-namespace:RestaurantWPF.ViewModels"
+             xmlns:converter="clr-namespace:RestaurantWPF.Converters"             
              StartupUri="Views/CreateReservationView.xaml">
     <Application.Resources>
-        <Style x:Key="InputLabel" TargetType="Label">
-            <Setter Property="FontSize" Value="30" />
-            <Setter Property="Margin" Value="10"/>
-        </Style>
-         
+        <ResourceDictionary>
+            <converter:TimeConverter x:Key="TimeConverter"></converter:TimeConverter>
+            <Style x:Key="InputLabel" TargetType="Label">
+                <Setter Property="FontSize" Value="30" />
+                <Setter Property="Margin" Value="10"/>
+            </Style>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

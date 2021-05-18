@@ -4,10 +4,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RestaurantWPF.Views"
+        xmlns:vm="clr-namespace:RestaurantWPF.ViewModels"
         mc:Ignorable="d"
         Title="Create Reservation" Height="900" Width="900">
+    <Window.Resources>
+        <vm:CreateReservationViewModel x:Key="vm" />
+    </Window.Resources>
     <ScrollViewer>
-        <Grid>
+        <Grid DataContext="{StaticResource vm}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
@@ -95,7 +99,8 @@
                 </Grid.ColumnDefinitions>
                 <TextBox Grid.Column="0" 
                      Margin="5"
-                     FontSize="30"/>
+                     FontSize="30"
+                         Text=""/>
                 <Label Grid.Column="1"
                    Margin="5"
                    FontSize="30"
@@ -104,6 +109,7 @@
                      Margin="5"
                      FontSize="30"/>
             </Grid>
+            <!--Binding , Converter={StaticResource TimeConverter}-->
 
 
             <Label Grid.Row="7"
@@ -138,7 +144,11 @@
             <ComboBox Grid.Row="8"
                   Grid.Column="1"
                   FontSize="30"
-                  Margin="10"/>
+                  Margin="10"                      
+                  ItemsSource="{Binding ArrivalStatuses}"
+                      DisplayMemberPath="Status"
+                      SelectedValuePath="Id"
+                      />
 
             <Label Grid.Row="9"
                Grid.Column="0"

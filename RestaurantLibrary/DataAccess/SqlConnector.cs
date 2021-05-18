@@ -49,14 +49,12 @@ namespace RestaurantLibrary.DataAccess
                 throw;
             }
             return table.Id;
-        }
-
+        }        
 
         public List<ArrivalStatus> GetArrivalStatuses()
         {
             string sql = "SELECT * FROM arrival_statuses ORDER BY id";
             List<ArrivalStatus> arrivalStatuses = new List<ArrivalStatus>();
-            ArrivalStatus arrivalStatus = new ArrivalStatus();
 
             try
             {
@@ -64,7 +62,25 @@ namespace RestaurantLibrary.DataAccess
                 {
                     using (SqlCommand cmd = new SqlCommand(sql, conn))
                     {
+                        try
+                        {
+                            conn.Open();
+                            SqlDataReader reader = cmd.ExecuteReader();
+                            while (reader.Read())
+                            {
+                                ArrivalStatus arrivalStatus = new ArrivalStatus();
+                                arrivalStatus.Id = reader.GetInt32(0);
+                                arrivalStatus.Status = reader.GetString(1);
+                                arrivalStatuses.Add(arrivalStatus);
+                            }
+                            reader.Close();
 
+                        }
+                        catch (Exception)
+                        {
+
+                            throw;
+                        }
                     }
                 }
             }

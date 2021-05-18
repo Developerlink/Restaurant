@@ -59,6 +59,11 @@
     <Compile Include="DataAccess\SqlConnector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="propin.snippet" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="onchange.snippet" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
