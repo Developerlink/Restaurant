@@ -11,6 +11,7 @@ namespace RestaurantLibrary.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public List<Area> Areas { get; set; } = new List<Area>();
+        public int CVR { get; set; }
         public int PhoneNumber { get; set; }
         public string Email { get; set; }
         public string Address { get; set; }

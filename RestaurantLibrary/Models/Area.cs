@@ -10,6 +10,7 @@ namespace RestaurantLibrary.Models
     public class Area : INotifyPropertyChanged
     {
         public int Id { get; set; }
+        public int RestaurantId { get; set; }
         
         private string _Name;
         public string Name
@@ -21,6 +22,7 @@ namespace RestaurantLibrary.Models
                 OnPropertyChanged("Name");
             }
         }
+
 
         public List<DinnerTable> DinnerTables { get; set; } = new List<DinnerTable>();
 

@@ -47,7 +47,7 @@
                  Grid.Column="1"
                  FontSize="30"                 
                  Margin="10"
-                     Text=""/>
+                     Text="{Binding CurrentGuest.FirstName, Mode=TwoWay}"/>
 
             <Label Grid.Row="2"
                Grid.Column="0"
@@ -56,7 +56,8 @@
             <TextBox Grid.Row="2"
                  Grid.Column="1"
                  FontSize="30"                 
-                 Margin="10"/>
+                 Margin="10"
+                     Text="{Binding CurrentGuest.LastName, Mode=TwoWay}"/>
 
             <Label Grid.Row="3"
                Grid.Column="0"
@@ -66,56 +67,43 @@
                  Grid.Column="1"
                  FontSize="30"                 
                  Margin="10"
-                 />
+                 Text="{Binding CurrentReservation.WantedSeats, Mode=TwoWay}"/>
 
             <Label Grid.Row="4"
                Grid.Column="0"
-               Content="Phone number" 
+               Content="Tables Assigned" 
                Style="{StaticResource InputLabel}"/>
-            <TextBox Grid.Row="4"
-                 Grid.Column="1"
-                 FontSize="30"                 
-                 Margin="10"/>
+            <ListView Grid.Row="4"
+                  Grid.Column="1"
+                  Margin="10" 
+                  MinHeight="100"
+                  FontSize="30"                  
+                  ScrollViewer.CanContentScroll="True"
+                      ItemsSource="{Binding CurrentReservation.Tables, Mode=TwoWay}"/>
 
             <Label Grid.Row="5"
                Grid.Column="0"
-               Content="Date" 
+               Content="Phone number" 
                Style="{StaticResource InputLabel}"/>
-            <DatePicker Grid.Row="5"
-                    Grid.Column="1"
-                    FontSize="30"
-                    Margin="10" />
+            <TextBox Grid.Row="5"
+                 Grid.Column="1"
+                 FontSize="30"                 
+                 Margin="10"
+                     Text="{Binding CurrentGuest.PhoneNumber, Mode=TwoWay}"/>
 
             <Label Grid.Row="6"
                Grid.Column="0"
-               Content="Time In" 
+               Content="Date" 
                Style="{StaticResource InputLabel}"/>
-            <Grid Grid.Row="6"
-              Grid.Column="1"
-              Margin="10">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0" 
-                     Margin="5"
-                     FontSize="30"
-                         Text=""/>
-                <Label Grid.Column="1"
-                   Margin="5"
-                   FontSize="30"
-                   Content=":"/>
-                <TextBox Grid.Column="2"
-                     Margin="5"
-                     FontSize="30"/>
-            </Grid>
-            <!--Binding , Converter={StaticResource TimeConverter}-->
-
+            <DatePicker Grid.Row="6"
+                    Grid.Column="1"
+                    FontSize="30"
+                    Margin="10" 
+                        SelectedDate="{Binding CurrentReservation.TimeIn, Mode=TwoWay}"/>
 
             <Label Grid.Row="7"
                Grid.Column="0"
-               Content="Time Out" 
+               Content="Time In" 
                Style="{StaticResource InputLabel}"/>
             <Grid Grid.Row="7"
               Grid.Column="1"
@@ -127,56 +115,99 @@
                 </Grid.ColumnDefinitions>
                 <TextBox Grid.Column="0" 
                      Margin="5"
-                     FontSize="30"/>
+                     FontSize="30"
+                         Text="{Binding CurrentReservation.TimeIn, Mode=TwoWay}"/>
                 <Label Grid.Column="1"
                    Margin="5"
                    FontSize="30"
                    Content=":"/>
                 <TextBox Grid.Column="2"
                      Margin="5"
-                     FontSize="30"/>
+                     FontSize="30"
+                         Text="{Binding CurrentReservation.TimeIn, Mode=TwoWay}"/>
             </Grid>
+            <!--Binding , Converter={StaticResource TimeConverter}-->
 
 
             <Label Grid.Row="8"
                Grid.Column="0"
+               Content="Time Out" 
+               Style="{StaticResource InputLabel}"/>
+            <Grid Grid.Row="8"
+              Grid.Column="1"
+              Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBox Grid.Column="0" 
+                     Margin="5"
+                     FontSize="30"
+                         Text="{Binding CurrentReservation.TimeOut, Mode=TwoWay}"/>
+                <Label Grid.Column="1"
+                   Margin="5"
+                   FontSize="30"
+                   Content=":"/>
+                <TextBox Grid.Column="2"
+                     Margin="5"
+                     FontSize="30"
+                         Text="{Binding CurrentReservation.TimeOut, Mode=TwoWay}"/>
+            </Grid>
+
+            <Label Grid.Row="9"
+               Grid.Column="0"
                Content="Status" 
                Style="{StaticResource InputLabel}"/>
-            <ComboBox Grid.Row="8"
+            <ComboBox Grid.Row="9"
                   Grid.Column="1"
                   FontSize="30"
                   Margin="10"                      
                   ItemsSource="{Binding ArrivalStatuses}"
                   DisplayMemberPath="Status"
-                  SelectedValuePath="Id "/>
-
-            <Label Grid.Row="9"
-               Grid.Column="0"
-               Content="Tables Assigned" 
-               Style="{StaticResource InputLabel}"/>
-            <ListView Grid.Row="9"
-                  Grid.RowSpan="2"
-                  Grid.Column="1"
-                  Margin="10" 
-                  MinHeight="50"
-                  FontSize="30"                  
-                  ScrollViewer.CanContentScroll="True"/>
+                  SelectedValuePath="Id"
+                      SelectedItem="{Binding CurrentReservation.ArrivalStatus, Mode=OneWayToSource}"/>
+            
 
             <Button Grid.Row="11"
                 Grid.Column="1"
                 Content="Create"
                 FontSize="30"
-                Margin="10"/> 
-            
-            <Label Grid.Row="6"
+                Margin="10"
+                    Command="{Binding CreateReservationCommand}"/>
+
+
+            <Label Grid.Row="1"
+               Grid.Column="2"
+               Content="Selected Area" 
+               Style="{StaticResource InputLabel}"/>
+            <ComboBox Grid.Row="2"
+                  Grid.Column="2"
+                  FontSize="30"
+                  Margin="10"                      
+                  ItemsSource="{Binding Restaurant.Areas}"
+                  DisplayMemberPath="Name"
+                  SelectedValuePath="Id"
+                  SelectedItem="{Binding SelectedArea, Mode=TwoWay}"/>
+            <Label Grid.Row="3"
                Grid.Column="2"
                Content="Free Tables" 
                Style="{StaticResource InputLabel}"/>
-            <ListView Grid.Row="7"
+            <ListView Grid.Row="4"
                       Grid.RowSpan="11"
                       Grid.Column="2"
+                      MaxHeight="600"
                       Margin="10"
-                      FontSize="20"/>
+                      FontSize="20"
+                      ScrollViewer.CanContentScroll="True"
+                      ItemsSource="{Binding CurrentFreeTables}">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Table Name" Width="150" DisplayMemberBinding="{Binding Name}" />
+                        <GridViewColumn Header="Seats" Width="50" DisplayMemberBinding="{Binding Seats}" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
 
 
 
