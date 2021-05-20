@@ -7,20 +7,16 @@ using System.Windows.Input;
 
 namespace RestaurantWPF.Commands
 {
-    public class SelectAreaUpdateFreeTablesCommand : ICommand
+    public class RemoveTableFromReservationCommand : ICommand
     {
         private Action execute;
 
-        public SelectAreaUpdateFreeTablesCommand(Action execute)
+        public RemoveTableFromReservationCommand(Action execute)
         {
             this.execute = execute;
         }
 
-        public event EventHandler CanExecuteChanged
-        {
-            add { CommandManager.RequerySuggested += value; }
-            remove { CommandManager.RequerySuggested -= value;  }
-        }
+        public event EventHandler CanExecuteChanged;
 
         public bool CanExecute(object parameter)
         {

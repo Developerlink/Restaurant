@@ -9,6 +9,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace RestaurantWPF.ViewModels
@@ -60,6 +61,7 @@ namespace RestaurantWPF.ViewModels
         }
 
         public ObservableCollection<DinnerTable> CurrentFreeTables { get; set; }
+        public ObservableCollection<DinnerTable> CurrentReservedTables { get; set; }
 
         public List<ArrivalStatus> ArrivalStatuses { get; set; }
 
@@ -74,19 +76,48 @@ namespace RestaurantWPF.ViewModels
             }
         }
 
-        //public ICommand SelectAreaCommand { get; set; }
+        private DinnerTable _SelectedTableFromFreeTables;
+        public DinnerTable SelectedTableFromFreeTables
+        {
+            get { return _SelectedTableFromFreeTables; }
+            set
+            {
+                _SelectedTableFromFreeTables = value;
+                OnPropertyChanged("SelectedTableFromFreeTables");
+            }
+        }
+
+        private DinnerTable _SelectedTableFromReservationTables;
+        public DinnerTable SelectedTableFromReservationTables
+        {
+            get { return _SelectedTableFromReservationTables; }
+            set
+            {
+                _SelectedTableFromReservationTables = value;
+                OnPropertyChanged("SelectedTableFromReservationTables");
+            }
+        }
+
+
+        public ICommand SelectAreaCommand { get; set; }
         public ICommand CreateReservationCommand { get; set; }
+        public ICommand AddTableToReservationCommand { get; set; }
+        public ICommand RemoveTableFromReservationCommand { get; set; }
 
         // CONSTRUCTOR
         public CreateReservationViewModel()
         {
+            SelectedTableFromFreeTables = new DinnerTable();
+            SelectedTableFromReservationTables = new DinnerTable();
+            CurrentGuest = new Guest();
             ArrivalStatuses = new List<ArrivalStatus>();
             CurrentFreeTables = new ObservableCollection<DinnerTable>();
-            SelectedArea = new Area();            
-            LoadData();
-            CreateReservationCommand = new CreateReservatinCommand(CreateReservation, CanCreateReservation);
+            CurrentReservedTables = new ObservableCollection<DinnerTable>();
+            SelectedArea = new Area();
             CurrentReservation = new Reservation();
-        }        
+            LoadData();
+            LoadCommands();
+        }
 
         // Properties
         private void LoadData()
@@ -104,33 +135,59 @@ namespace RestaurantWPF.ViewModels
         }
 
         // Commands
+        private void LoadCommands()
+        {
+            CreateReservationCommand = new CreateReservationCommand(CreateReservation, CanCreateReservation);
+            SelectAreaCommand = new SelectAreaUpdateFreeTablesCommand(UpdateCurrentFreeTables);
+            AddTableToReservationCommand = new AddTableToReservationCommand(AddTableToCurrentReservation);
+            RemoveTableFromReservationCommand = new RemoveTableFromReservationCommand(RemoveTableFromCurrentReservation);
+        }
+
+        // Methods
         private void CreateReservation(object obj)
         {
-
+            MessageBox.Show("Your reservation has been saved!");
         }
 
         private bool CanCreateReservation(object obj)
         {
-            if(CurrentReservation != null)
+            bool result = true;
+            if (CurrentReservation.WantedSeats == 0)
             {
-                return true;
+                result = false;
             }
-            else
+            return result;
+        }
+
+        private void UpdateCurrentFreeTables()
+        {
+            CurrentFreeTables.Clear();
+            foreach (var t in SelectedArea.DinnerTables)
             {
-                return false;
-            }            
+                CurrentFreeTables.Add(t);
+            }
+            if (CurrentReservation.Tables.Any())
+            {
+                foreach (var t in CurrentReservation.Tables)
+                {
+                    CurrentFreeTables.Remove(t);
+                }
+            }
         }
 
-
-        private void LoadCommands()
+        private void AddTableToCurrentReservation()
         {
+            if (_SelectedTableFromFreeTables != null)
+            {
+                CurrentReservation.Tables.Add(SelectedTableFromFreeTables);
+            }
         }
 
-        // Methods
-        private bool CanExecute()
+        private void RemoveTableFromCurrentReservation()
         {
-            return false;
+            MessageBox.Show("Removing table from reservation");
         }
+
 
         // Interface implementation
         public event PropertyChangedEventHandler PropertyChanged;

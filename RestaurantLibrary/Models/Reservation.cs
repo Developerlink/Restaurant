@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -58,7 +59,7 @@ namespace RestaurantLibrary.Models
             }
         }
 
-        public List<DinnerTable> Tables { get; set; } = new List<DinnerTable>();
+        public ObservableCollection<DinnerTable> Tables { get; set; } = new ObservableCollection<DinnerTable>();
 
         private int _TotalSeats;
         public int TotalSeats

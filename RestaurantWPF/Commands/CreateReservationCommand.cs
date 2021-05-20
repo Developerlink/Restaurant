@@ -7,12 +7,13 @@ using System.Windows.Input;
 
 namespace RestaurantWPF.Commands
 {
-    public class CreateReservatinCommand : ICommand
+    public class CreateReservationCommand : ICommand
     {
         private Action<object> execute;
         private Predicate<object> canExecute;
 
-        public CreateReservatinCommand(Action<object> execute, Predicate<object> canExecute)
+        // Passing in a method in execute and a bool in canExecute.
+        public CreateReservationCommand(Action<object> execute, Predicate<object> canExecute)
         {
             this.execute = execute;
             this.canExecute = canExecute;
@@ -30,6 +31,7 @@ namespace RestaurantWPF.Commands
             return b;
         }
 
+        // Using the passed in method. The parameter is whatever caused the command to execute. In this case the click of a button.
         public void Execute(object parameter)
         {
             execute(parameter);
