@@ -5,11 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RestaurantWPF.Views"
         xmlns:vm="clr-namespace:RestaurantWPF.ViewModels"
+        xmlns:cv="clr-namespace:RestaurantWPF.Converters"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
         mc:Ignorable="d"
         Title="Create Reservation" Height="900" Width="900">
     <Window.Resources>
         <vm:CreateReservationViewModel x:Key="vm"/>
+        <cv:AreaConverter x:Key="IdToArea" />
     </Window.Resources>
     <ScrollViewer>
         <Grid DataContext="{StaticResource vm}">
@@ -91,6 +93,7 @@
                     <GridView>
                         <GridViewColumn Header="Table Name" Width="150" DisplayMemberBinding="{Binding Name}" />
                         <GridViewColumn Header="Seats" Width="50" DisplayMemberBinding="{Binding Seats}" />
+                        <GridViewColumn Header="Area" Width="50" DisplayMemberBinding="{Binding AreaId, Converter={StaticResource IdToArea}}" />
                     </GridView>
                 </ListView.View>
             </ListView>

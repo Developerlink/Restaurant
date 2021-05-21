@@ -12,7 +12,7 @@ namespace RestaurantLibrary.DataAccess
 {
     public class SqlConnector
     {
-        private const string db = "RestaurantSqlHome";
+        private const string db = "RestaurantSqlLocal";
 
         public int CreateDinnerTable(DinnerTable table)
         {

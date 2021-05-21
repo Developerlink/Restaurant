@@ -65,6 +65,7 @@
     <Compile Include="Commands\CreateReservationCommand.cs" />
     <Compile Include="Commands\RemoveTableFromReservationCommand.cs" />
     <Compile Include="Commands\SelectAreaUpdateFreeTablesCommand.cs" />
+    <Compile Include="Converters\AreaConverter.cs" />
     <Compile Include="Converters\TimeConverter.cs" />
     <Compile Include="ViewModels\CreateReservationViewModel.cs" />
     <Compile Include="ViewModels\CreateTableViewModel.cs" />

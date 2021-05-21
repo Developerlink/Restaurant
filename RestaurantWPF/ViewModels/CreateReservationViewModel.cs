@@ -179,13 +179,15 @@ namespace RestaurantWPF.ViewModels
         {
             if (_SelectedTableFromFreeTables != null)
             {
-                CurrentReservation.Tables.Add(SelectedTableFromFreeTables);
+                CurrentReservation.Tables.Add(SelectedTableFromFreeTables);                
+                UpdateCurrentFreeTables();
             }
         }
 
         private void RemoveTableFromCurrentReservation()
-        {
-            MessageBox.Show("Removing table from reservation");
+        {   
+                CurrentReservation.Tables.Remove(SelectedTableFromReservationTables);
+                UpdateCurrentFreeTables();            
         }
 
 
