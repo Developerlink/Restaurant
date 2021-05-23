@@ -1,7 +1,7 @@
 ﻿using RestaurantLibrary;
 using RestaurantLibrary.DataAccess;
 using RestaurantLibrary.Models;
-using RestaurantWPF.Commands;
+using RestaurantWPF.ViewModels.Commands;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -14,7 +14,7 @@ using System.Windows.Input;
 
 namespace RestaurantWPF.ViewModels
 {
-    public class CreateReservationViewModel : INotifyPropertyChanged
+    public class ReservationEditorViewModel : INotifyPropertyChanged
     {
         private Restaurant _Restaurant;
         public Restaurant Restaurant
@@ -105,7 +105,7 @@ namespace RestaurantWPF.ViewModels
         public ICommand RemoveTableFromReservationCommand { get; set; }
 
         // CONSTRUCTOR
-        public CreateReservationViewModel()
+        public ReservationEditorViewModel()
         {
             SelectedTableFromFreeTables = new DinnerTable();
             SelectedTableFromReservationTables = new DinnerTable();

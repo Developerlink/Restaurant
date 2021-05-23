@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace RestaurantWPF.Commands
+namespace RestaurantWPF.ViewModels.Commands
 {
     public class CreateReservationCommand : ICommand
     {

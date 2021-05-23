@@ -61,47 +61,40 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Commands\AddTableToReservationCommand.cs" />
-    <Compile Include="Commands\CreateReservationCommand.cs" />
-    <Compile Include="Commands\RemoveTableFromReservationCommand.cs" />
-    <Compile Include="Commands\SelectAreaUpdateFreeTablesCommand.cs" />
-    <Compile Include="Converters\AreaConverter.cs" />
-    <Compile Include="Converters\TimeConverter.cs" />
-    <Compile Include="ViewModels\CreateReservationViewModel.cs" />
+    <Compile Include="ViewModels\Commands\AddTableToReservationCommand.cs" />
+    <Compile Include="ViewModels\Commands\CreateReservationCommand.cs" />
+    <Compile Include="ViewModels\Commands\RemoveTableFromReservationCommand.cs" />
+    <Compile Include="ViewModels\Commands\SelectAreaUpdateFreeTablesCommand.cs" />
+    <Compile Include="ViewModels\Converters\AreaConverter.cs" />
+    <Compile Include="ViewModels\Converters\TimeConverter.cs" />
+    <Compile Include="ViewModels\ReservationEditorViewModel.cs" />
     <Compile Include="ViewModels\CreateTableViewModel.cs" />
-    <Compile Include="Views\CreateReservationView.xaml.cs">
-      <DependentUpon>CreateReservationView.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="ViewModels\ReservationManagerViewModel.cs" />
     <Compile Include="Views\CreateTableView.xaml.cs">
       <DependentUpon>CreateTableView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\EditReservationView.xaml.cs">
-      <DependentUpon>EditReservationView.xaml</DependentUpon>
+    <Compile Include="Views\ReservationEditorView.xaml.cs">
+      <DependentUpon>ReservationEditorView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ReservationManagerView.xaml.cs">
+      <DependentUpon>ReservationManagerView.xaml</DependentUpon>
     </Compile>
     <Compile Include="VMLocator.cs" />
-    <Page Include="MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Page Include="Views\CreateReservationView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\CreateTableView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\EditReservationView.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="Views\ReservationEditorView.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ReservationManagerView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>

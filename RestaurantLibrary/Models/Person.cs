@@ -33,6 +33,12 @@ namespace RestaurantLibrary.Models
             }
         }
 
+        public string FullName
+        {
+            get { return $"{FirstName} {LastName}"; }
+        }
+
+
         private int _PhoneNumber;
         public int PhoneNumber
         {

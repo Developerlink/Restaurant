@@ -5,13 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace RestaurantWPF.Commands
+namespace RestaurantWPF.ViewModels.Commands
 {
-    public class RemoveTableFromReservationCommand : ICommand
+    class AddTableToReservationCommand : ICommand
     {
         private Action execute;
 
-        public RemoveTableFromReservationCommand(Action execute)
+        public AddTableToReservationCommand(Action execute)
         {
             this.execute = execute;
         }

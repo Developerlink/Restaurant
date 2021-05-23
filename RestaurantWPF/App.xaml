@@ -3,8 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:RestaurantWPF"
              xmlns:vm="clr-namespace:RestaurantWPF.ViewModels"
-             xmlns:converter="clr-namespace:RestaurantWPF.Converters"             
-             StartupUri="Views/CreateReservationView.xaml">
+             xmlns:converter="clr-namespace:RestaurantWPF.ViewModels.Converters"             
+             StartupUri="Views/ReservationManagerView.xaml">
     <Application.Resources>
         <ResourceDictionary>
             <Style x:Key="InputLabel" TargetType="Label">

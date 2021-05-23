@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 
-namespace RestaurantWPF.Converters
+namespace RestaurantWPF.ViewModels.Converters
 {
     public class TimeConverter : IValueConverter
     {

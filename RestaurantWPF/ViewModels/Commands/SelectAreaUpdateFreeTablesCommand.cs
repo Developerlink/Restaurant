@@ -5,18 +5,22 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace RestaurantWPF.Commands
+namespace RestaurantWPF.ViewModels.Commands
 {
-    class AddTableToReservationCommand : ICommand
+    public class SelectAreaUpdateFreeTablesCommand : ICommand
     {
         private Action execute;
 
-        public AddTableToReservationCommand(Action execute)
+        public SelectAreaUpdateFreeTablesCommand(Action execute)
         {
             this.execute = execute;
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler CanExecuteChanged
+        {
+            add { CommandManager.RequerySuggested += value; }
+            remove { CommandManager.RequerySuggested -= value;  }
+        }
 
         public bool CanExecute(object parameter)
         {
