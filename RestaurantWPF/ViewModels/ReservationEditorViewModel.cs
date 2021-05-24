@@ -123,12 +123,9 @@ namespace RestaurantWPF.ViewModels
         private void LoadData()
         {
             SqlConnector conn = new SqlConnector();
-            Restaurant = conn.GetRestaurant(1);
-            Restaurant.Areas = conn.GetAreas(Restaurant.Id);
-            foreach (var area in Restaurant.Areas)
-            {
-                area.DinnerTables = conn.GetTables(area.Id);
-            }
+            // Restaurant Id is hardcoded because I only have 1 restaurant, else it should have been selected by the user.
+            int restaurantId = 1;
+            Restaurant = conn.GetRestaurant(restaurantId);
             SelectedArea = Restaurant.Areas[0];
             CurrentFreeTables = SelectedArea.DinnerTables.ToObservableCollection();
             ArrivalStatuses = conn.GetArrivalStatuses();

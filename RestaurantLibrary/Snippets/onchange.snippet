@@ -23,7 +23,8 @@
         </Literal>
       </Declarations>
       <Code Language="csharp">
-        <![CDATA[public event PropertyChangedEventHandler PropertyChanged;
+        <![CDATA[// INotifyPropertyChanged INTERFACE IMPLEMENTATION.
+		public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged(string propertyName)
         {
             if (PropertyChanged != null)

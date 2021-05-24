@@ -5,15 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RestaurantWPF.Views"
         xmlns:vm="clr-namespace:RestaurantWPF.ViewModels"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
         Title="Table Overview" Height="450" Width="800"
         WindowState="Maximized">
-    <Grid>
+    <Window.Resources>
+        <vm:ReservationManagerViewModel x:Key="vm"/>
+    </Window.Resources>
+    <Grid DataContext="{StaticResource vm}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
@@ -22,7 +27,7 @@
         <!--Column 0-->
         <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Horizontal" Margin="10">
             <Label Content="Restaurant name:" FontSize="30"/>
-            <Label Content="Bamboo" FontSize="30" />
+            <Label Content="{Binding SelectedRestaurant.Name}" FontSize="30" />
         </StackPanel>
 
         <Grid Grid.Column="0" Grid.Row="1" Margin="5">
@@ -32,15 +37,26 @@
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="0" Margin="5">
                 <Label Content="Selected Area" FontSize="20"/>
-                <ComboBox FontSize="20"/>
+                <ComboBox FontSize="20" 
+                          ItemsSource="{Binding SelectedRestaurant.Areas}"
+                          DisplayMemberPath="Name"
+                          SelectedValuePath="Id"
+                          SelectedItem="{Binding SelectedArea, Mode=TwoWay}"/>
             </StackPanel>
             <StackPanel Grid.Column="1" Margin="5">
                 <Label Content="Selected Date" FontSize="20"/>
-                <DatePicker FontSize="20"/>
+                <DatePicker FontSize="20"
+                            SelectedDate="{Binding SelectedDate}"/>
             </StackPanel>
         </Grid>
 
-        <ListView Grid.Column="0" Grid.Row="2" Margin="10">
+        <StackPanel Grid.Column="0" Grid.Row="2" Orientation="Horizontal"
+                    Margin="10,0,10,0">
+            <Label Content="Total number: " 
+                   FontSize="20"/>            
+        </StackPanel>
+
+        <ListView Grid.Column="0" Grid.Row="3" Margin="10">
             <ListView.Resources>
                 <Style TargetType="{x:Type GridViewColumnHeader}">
                     <Setter Property="HorizontalContentAlignment"
@@ -55,12 +71,15 @@
             </ListView.Resources>
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Time of arrival" />
+                    <GridViewColumn Header="Time in" />
                     <GridViewColumn Header="Name" />
                     <GridViewColumn Header="Numbers" />
                     <GridViewColumn Header="Table(s)" />
+                    <GridViewColumn Header="Seats" />
                     <GridViewColumn Header="Status" />
-                    <GridViewColumn Header="Time to leave" />
+                    <GridViewColumn Header="Time out" />
+                    <GridViewColumn Header="Phone" />
+                    <GridViewColumn Header="Modified" />
                     <GridViewColumn>
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
@@ -80,7 +99,7 @@
                 FontSize="20"
                 Margin="10"/>
 
-        <ItemsControl Grid.Column="1" Grid.Row="1" Name="StatusesControl"
+        <ItemsControl Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Name="StatusesControl"
                       ItemsSource="{Binding buttons}" Margin="10">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
@@ -96,24 +115,24 @@
             </ItemsControl.ItemsPanel>
         </ItemsControl>
 
-        <DataGrid Grid.Column="1" Grid.Row="2" 
+        <DataGrid Grid.Column="1" Grid.Row="3" 
                   AutoGenerateColumns="False"
                   Margin="10">
             <DataGrid.ColumnHeaderStyle>
-                    <Style TargetType="{x:Type DataGridColumnHeader}">
-                        <Setter Property="HorizontalContentAlignment"
+                <Style TargetType="{x:Type DataGridColumnHeader}">
+                    <Setter Property="HorizontalContentAlignment"
                             Value="Stretch" />
-                        <Setter Property="Height"
+                    <Setter Property="Height"
                             Value="30" />
-                        <Setter Property="Padding"
+                    <Setter Property="Padding"
                             Value="10,0,10,0" />
-                        <Setter Property="Width"
+                    <Setter Property="Width"
                             Value="auto" />
-                    </Style>
+                </Style>
             </DataGrid.ColumnHeaderStyle>
             <DataGrid.Columns>
                 <!--1-->
-                <DataGridTextColumn Header="Time of arrival" Binding="{Binding Name}" />
+                <DataGridTextColumn Header="Time in" Binding="{Binding Name}" />
                 <!--2-->
                 <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
                 <!--3-->
@@ -121,9 +140,15 @@
                 <!--4-->
                 <DataGridTextColumn Header="Table(s)" Binding="{Binding Name}" />
                 <!--5-->
-                <DataGridTextColumn Header="Status" Binding="{Binding Name}" />
+                <DataGridTextColumn Header="Seats" Binding="{Binding Name}" />
                 <!--6-->
-                <DataGridTextColumn Header="Time to leave" Binding="{Binding Name}" />
+                <DataGridTextColumn Header="Status" Binding="{Binding Name}" />
+                <!--5-->
+                <DataGridTextColumn Header="Time out" Binding="{Binding Name}" />
+                <!--5-->
+                <DataGridTextColumn Header="Phone" Binding="{Binding Name}" />
+                <!--5-->
+                <DataGridTextColumn Header="Modified" Binding="{Binding Name}" />
 
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
@@ -132,7 +157,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                
+
             </DataGrid.Columns>
         </DataGrid>
 

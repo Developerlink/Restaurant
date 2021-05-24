@@ -7,12 +7,13 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 
 namespace RestaurantLibrary.DataAccess
 {
     public class SqlConnector
     {
-        private const string db = "RestaurantSqlLocal";
+        private const string db = "RestaurantSqlHome";
 
         public int CreateDinnerTable(DinnerTable table)
         {
@@ -45,19 +46,18 @@ namespace RestaurantLibrary.DataAccess
             }
             catch (Exception)
             {
-
                 throw;
             }
             return table.Id;
-        }      
-        
+        }
+
         public Restaurant GetRestaurant(int id)
         {
+            Restaurant restaurant = new Restaurant();
             string sql = "SELECT * FROM restaurants ";
             sql += "INNER JOIN streets ON streets.id=restaurants.street_id ";
             sql += "INNER JOIN cities ON cities.id=streets.city_id ";
             sql += "WHERE restaurants.Id = @Id ";
-            Restaurant restaurant = new Restaurant();
 
             try
             {
@@ -66,7 +66,7 @@ namespace RestaurantLibrary.DataAccess
                     SqlCommand cmd = new SqlCommand(sql, conn);
                     cmd.Parameters.Add(new SqlParameter("@Id", id));
                     using (cmd)
-                    {                    
+                    {
                         try
                         {
                             conn.Open();
@@ -77,7 +77,7 @@ namespace RestaurantLibrary.DataAccess
                                 restaurant.Name = reader.GetString(2);
                                 restaurant.CVR = reader.GetInt32(3);
                                 restaurant.PhoneNumber = reader.GetInt32(4);
-                                restaurant.Email = reader.GetString(5);                               
+                                restaurant.Email = reader.GetString(5);
                             }
                             reader.Close();
 
@@ -87,21 +87,21 @@ namespace RestaurantLibrary.DataAccess
 
                             throw;
                         }
-                    }                    
+                    }
                 }
             }
             catch (Exception)
             {
-
                 throw;
             }
+            restaurant.Areas = GetAreas(restaurant.Id);
             return restaurant;
         }
-     
-        public List<Area> GetAreas(int restaurantId)
+
+        private List<Area> GetAreas(int restaurantId)
         {
-            string sql = "SELECT * FROM areas WHERE restaurant_id = @id";
             List<Area> areas = new List<Area>();
+            string sql = "SELECT * FROM areas WHERE restaurant_id = @id";
 
             try
             {
@@ -139,13 +139,19 @@ namespace RestaurantLibrary.DataAccess
 
                 throw;
             }
+
+            foreach (var area in areas)
+            {
+                area.DinnerTables = GetTables(area.Id);
+            }
+
             return areas;
         }
 
-        public List<DinnerTable> GetTables(int areaId)
+        private List<DinnerTable> GetTables(int areaId)
         {
-            string sql = $"SELECT * FROM dinner_tables WHERE area_id = @id";
             List<DinnerTable> tables = new List<DinnerTable>();
+            string sql = $"SELECT * FROM dinner_tables WHERE area_id = @id";
 
             try
             {
@@ -185,11 +191,10 @@ namespace RestaurantLibrary.DataAccess
             return tables;
         }
 
-
         public List<ArrivalStatus> GetArrivalStatuses()
         {
-            string sql = "SELECT * FROM arrival_statuses ORDER BY id";
             List<ArrivalStatus> arrivalStatuses = new List<ArrivalStatus>();
+            string sql = "SELECT * FROM arrival_statuses ORDER BY id";
 
             try
             {
@@ -225,6 +230,52 @@ namespace RestaurantLibrary.DataAccess
                 throw;
             }
             return arrivalStatuses;
+        }
+
+        public List<Reservation> GetReservations(DateTime selectedDate, Area selectedArea)
+        {
+            List<Reservation> reservations = new List<Reservation>();
+            // Name of stored procedure
+            string sp = "sp_reservations_get_for_date_area";
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(db))
+                {
+                    SqlCommand cmd = new SqlCommand(sp, conn);
+                    cmd.Parameters.Add(new SqlParameter("@Date", selectedDate));
+                    cmd.Parameters.Add(new SqlParameter("@AreaId", selectedArea.Id));
+                    using (cmd)
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        conn.Open();
+                        try
+                        {
+                            conn.Open();
+                            SqlDataReader reader = cmd.ExecuteReader();
+                            while (reader.Read())
+                            {
+                                Reservation reservation = new Reservation();
+
+                            }
+                            reader.Close();
+
+                        }
+                        catch (Exception)
+                        {
+
+                            throw;
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return table.Id;
+
+            return reservations;
         }
 
         protected virtual string GetConnectionInformation(SqlConnection cnn)
