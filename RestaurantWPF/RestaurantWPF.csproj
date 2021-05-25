@@ -66,6 +66,10 @@
     <Compile Include="ViewModels\Commands\RemoveTableFromReservationCommand.cs" />
     <Compile Include="ViewModels\Commands\SelectAreaUpdateFreeTablesCommand.cs" />
     <Compile Include="ViewModels\Converters\AreaConverter.cs" />
+    <Compile Include="ViewModels\Converters\DateConverter.cs" />
+    <Compile Include="ViewModels\Converters\ReservationsToTotalNumberConverter.cs" />
+    <Compile Include="ViewModels\Converters\TablesToSeatsConverter.cs" />
+    <Compile Include="ViewModels\Converters\TablesToStringConverter.cs" />
     <Compile Include="ViewModels\Converters\TimeConverter.cs" />
     <Compile Include="ViewModels\ReservationEditorViewModel.cs" />
     <Compile Include="ViewModels\CreateTableViewModel.cs" />

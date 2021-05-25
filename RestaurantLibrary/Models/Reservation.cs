@@ -26,14 +26,14 @@ namespace RestaurantLibrary.Models
             }
         }
 
-        private Area _Area;
-        public Area Area
+        private int _AreaId;
+        public int AreaId
         {
-            get { return _Area; }
+            get { return _AreaId; }
             set
             {
-                _Area = value;
-                OnPropertyChanged("Area");
+                _AreaId = value;
+                OnPropertyChanged("AreaId");
             }
         }
 
@@ -48,8 +48,8 @@ namespace RestaurantLibrary.Models
             }
         }
 
-        private string _ArrivalStatus;
-        public string ArrivalStatus
+        private ArrivalStatus _ArrivalStatus;
+        public ArrivalStatus ArrivalStatus
         {
             get { return _ArrivalStatus; }
             set
@@ -59,7 +59,7 @@ namespace RestaurantLibrary.Models
             }
         }
 
-        public ObservableCollection<DinnerTable> Tables { get; set; } = new ObservableCollection<DinnerTable>();
+        public List<DinnerTable> Tables { get; set; } = new List<DinnerTable>();
 
         private int _TotalSeats;
         public int TotalSeats
@@ -83,8 +83,8 @@ namespace RestaurantLibrary.Models
             }
         }
 
-        private DateTime _TimeOut;
-        public DateTime TimeOut
+        private DateTime? _TimeOut;
+        public DateTime? TimeOut
         {
             get { return _TimeOut; }
             set

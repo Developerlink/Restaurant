@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using RestaurantLibrary;
 using RestaurantLibrary.DataAccess;
 using RestaurantLibrary.Models;
@@ -26,7 +27,7 @@ namespace RestaurantWPF.ViewModels
             }
         }
 
-        private DateTime _SelectedDate = DateTime.Now;
+        private DateTime _SelectedDate = DateTime.Now.ChangeTime();
         public DateTime SelectedDate
         {
             get { return _SelectedDate; }
@@ -67,12 +68,15 @@ namespace RestaurantWPF.ViewModels
             int restaurantId = 1;
             SelectedRestaurant = conn.GetRestaurant(restaurantId);
             SelectedArea = SelectedRestaurant.Areas[0];
-            SelectedDateReservations = conn.GetReservations(SelectedDate, SelectedArea).ToObservableCollection();
+            UpdateSelectedDateReservations(SelectedDate, SelectedArea);
         }
 
         // METHODS
-
-
+        private void UpdateSelectedDateReservations(DateTime selectedDate, Area selectedArea)
+        {
+            SqlConnector conn = new SqlConnector();
+            SelectedDateReservations = conn.GetReservations(SelectedDate, SelectedArea).ToObservableCollection();
+        }
 
 
 

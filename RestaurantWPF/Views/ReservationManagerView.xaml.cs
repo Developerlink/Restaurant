@@ -20,35 +20,12 @@ namespace RestaurantWPF.Views
     /// </summary>
     public partial class TableView : Window
     {
-        public List<TestButton> buttons = new List<TestButton>();
-
         public TableView()
         {
             InitializeComponent();
-
-            buttons.Add(new TestButton("Awaiting"));
-            buttons.Add(new TestButton("Arrived"));
-            buttons.Add(new TestButton("Seated"));
-            buttons.Add(new TestButton("Ordered"));
-            buttons.Add(new TestButton("Finished"));
-            buttons.Add(new TestButton("Cancelled"));
-            buttons.Add(new TestButton("No show"));
-
-            StatusesControl.ItemsSource = buttons;
         }
-
-
 
     }
 
-    public class TestButton
-    {
-        public string Name { get; set; }
-
-        public TestButton(string name)
-        {
-            Name = name;
-        }
-    }
 
 }

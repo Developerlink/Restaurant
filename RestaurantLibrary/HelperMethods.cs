@@ -26,6 +26,19 @@ namespace RestaurantLibrary
             return c; 
         }
 
+        public static DateTime ChangeTime(this DateTime dateTime, int hours = 0, int minutes = 0, int seconds = 0, int milliseconds = 0)
+        {
+            return new DateTime(
+                dateTime.Year,
+                dateTime.Month,
+                dateTime.Day,
+                hours,
+                minutes,
+                seconds,
+                milliseconds,
+                dateTime.Kind);
+        }
+
 
 
     }

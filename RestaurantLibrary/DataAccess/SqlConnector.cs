@@ -13,7 +13,8 @@ namespace RestaurantLibrary.DataAccess
 {
     public class SqlConnector
     {
-        private const string db = "RestaurantSqlHome";
+        private const string db = "RestaurantSqlLocal";
+        //private const string db = "RestaurantSqlHome";
 
         public int CreateDinnerTable(DinnerTable table)
         {
@@ -191,6 +192,58 @@ namespace RestaurantLibrary.DataAccess
             return tables;
         }
 
+        private List<DinnerTable> GetReservedTables(int reservationId)
+        {
+            List<DinnerTable> tables = new List<DinnerTable>();
+            string sql = $"SELECT dinner_tables.id, dinner_tables.table_name, dinner_tables.seats, dinner_tables.area_id "; 
+            sql += "FROM dinner_tables ";
+            sql += "INNER JOIN table_reservations ON table_reservations.dinner_table_id=dinner_tables.id ";
+            sql += "INNER JOIN reservations ON reservations.id=table_reservations.reservation_id ";
+            sql += "WHERE reservation_id = @id ";
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(GlobalConfig.ConnString(db)))
+                {
+                    SqlCommand cmd = new SqlCommand(sql, conn);
+                    cmd.Parameters.Add("@id", SqlDbType.Int).Value = reservationId;
+                    using (cmd)
+                    {
+                        try
+                        {
+                            conn.Open();
+                            SqlDataReader reader = cmd.ExecuteReader();
+                            int tableId = reader.GetOrdinal("id");
+                            int tableName = reader.GetOrdinal("table_name");
+                            int tableSeats = reader.GetOrdinal("seats");
+                            int tableAreaId = reader.GetOrdinal("area_id");
+ 
+                            while (reader.Read())
+                            {
+                                DinnerTable table = new DinnerTable();
+                                table.Id = reader.GetInt32(tableId);
+                                table.Name = reader.GetString(tableName);
+                                table.Seats = reader.GetInt32(tableSeats);
+                                table.AreaId = reader.GetInt32(tableAreaId);
+                                tables.Add(table);
+                            }
+                            reader.Close();
+                        }
+                        catch (Exception)
+                        {
+                            throw;
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return tables;
+        }
+
         public List<ArrivalStatus> GetArrivalStatuses()
         {
             List<ArrivalStatus> arrivalStatuses = new List<ArrivalStatus>();
@@ -240,7 +293,7 @@ namespace RestaurantLibrary.DataAccess
 
             try
             {
-                using (SqlConnection conn = new SqlConnection(db))
+                using (SqlConnection conn = new SqlConnection(GlobalConfig.ConnString(db)))
                 {
                     SqlCommand cmd = new SqlCommand(sp, conn);
                     cmd.Parameters.Add(new SqlParameter("@Date", selectedDate));
@@ -251,30 +304,52 @@ namespace RestaurantLibrary.DataAccess
                         conn.Open();
                         try
                         {
-                            conn.Open();
                             SqlDataReader reader = cmd.ExecuteReader();
+
                             while (reader.Read())
                             {
-                                Reservation reservation = new Reservation();
+                                Guest guest = new Guest();
+                                guest.Id = reader.GetInt32(0);
+                                guest.FirstName = reader.GetString(1);
+                                guest.LastName = reader.GetString(2);
+                                guest.PhoneNumber = reader.GetInt32(3);
 
+                                ArrivalStatus arrivalStatus = new ArrivalStatus();
+                                arrivalStatus.Id = reader.GetInt32(4);
+                                arrivalStatus.Status = reader.GetString(5);
+
+                                Reservation reservation = new Reservation();
+                                reservation.AreaId = reader.GetInt32(6);
+                                reservation.TimeIn = reader.GetDateTime(7);
+                                if (!reader.IsDBNull(8))
+                                {
+                                    reservation.TimeOut = reader.GetDateTime(8);
+                                }
+                                reservation.WantedSeats = reader.GetInt32(9);
+                                reservation.ModifyDate = reader.GetDateTime(10);
+                                reservation.Id = reader.GetInt32(11);
+                                reservation.Guest = guest;
+                                reservation.ArrivalStatus = arrivalStatus;
+
+                                reservations.Add(reservation);
                             }
                             reader.Close();
-
                         }
                         catch (Exception)
                         {
-
                             throw;
                         }
-                    }
+                    }                    
                 }
             }
             catch (Exception)
             {
                 throw;
             }
-            return table.Id;
-
+            foreach (var reservation in reservations)
+            {
+                reservation.Tables = GetReservedTables(reservation.Id);
+            }
             return reservations;
         }
 

@@ -8,20 +8,12 @@ using System.Windows.Data;
 
 namespace RestaurantWPF.ViewModels.Converters
 {
-    public class TimeConverter : IValueConverter
+    class DateConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value != null)
-            {
-                DateTime time = (DateTime)value;
-                return time.ToString("HH:mm");
-            }
-            else
-            {
-                return "";
-            }
-
+            DateTime date = (DateTime)value;
+            return date.ToString("yyyy-MM-dd");
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

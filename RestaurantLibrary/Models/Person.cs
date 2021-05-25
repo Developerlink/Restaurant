@@ -9,7 +9,7 @@ namespace RestaurantLibrary.Models
 {
     public abstract class Person : INotifyPropertyChanged
     {
-        public int Id { get; private set; }
+        public int Id { get; set; }
 
         private string _FirstName;
         public string FirstName

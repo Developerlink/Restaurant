@@ -5,13 +5,19 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RestaurantWPF.Views"
         xmlns:vm="clr-namespace:RestaurantWPF.ViewModels"
-        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:cv="clr-namespace:RestaurantWPF.ViewModels.Converters"
         mc:Ignorable="d"
         Title="Table Overview" Height="450" Width="800"
         WindowState="Maximized">
     <Window.Resources>
         <vm:ReservationManagerViewModel x:Key="vm"/>
+        <cv:TimeConverter x:Key="TimeConverter"/>
+        <cv:DateConverter x:Key="DateConverter"/>
+        <cv:ReservationsToTotalNumberConverter x:Key="ReservationsToTotalNumberConverter"/>
+        <cv:TablesToStringConverter x:Key="TablesToStringConverter"/>
+        <cv:TablesToSeatsConverter x:Key="TablesToSeatsConverter"/>
     </Window.Resources>
+    
     <Grid DataContext="{StaticResource vm}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -52,11 +58,13 @@
 
         <StackPanel Grid.Column="0" Grid.Row="2" Orientation="Horizontal"
                     Margin="10,0,10,0">
-            <Label Content="Total number: " 
+            <Label Content="{Binding SelectedDateReservations, Converter={StaticResource ReservationsToTotalNumberConverter}}"
+                   ContentStringFormat="Total number: {0}"
                    FontSize="20"/>            
         </StackPanel>
 
-        <ListView Grid.Column="0" Grid.Row="3" Margin="10">
+        <ListView Grid.Column="0" Grid.Row="3" Margin="10"
+                  ItemsSource="{Binding SelectedDateReservations}">
             <ListView.Resources>
                 <Style TargetType="{x:Type GridViewColumnHeader}">
                     <Setter Property="HorizontalContentAlignment"
@@ -71,19 +79,19 @@
             </ListView.Resources>
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Time in" />
-                    <GridViewColumn Header="Name" />
-                    <GridViewColumn Header="Numbers" />
-                    <GridViewColumn Header="Table(s)" />
-                    <GridViewColumn Header="Seats" />
-                    <GridViewColumn Header="Status" />
-                    <GridViewColumn Header="Time out" />
-                    <GridViewColumn Header="Phone" />
-                    <GridViewColumn Header="Modified" />
+                    <GridViewColumn Header="Time in" DisplayMemberBinding="{Binding TimeIn, Converter={StaticResource TimeConverter}}"/>
+                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Guest.FullName}"/>
+                    <GridViewColumn Header="Numbers" DisplayMemberBinding="{Binding WantedSeats}"/>
+                    <GridViewColumn Header="Table(s)" DisplayMemberBinding="{Binding Tables, Converter={StaticResource TablesToStringConverter}}"/>
+                    <GridViewColumn Header="Seats" DisplayMemberBinding="{Binding Tables, Converter={StaticResource TablesToSeatsConverter}}"/>
+                    <GridViewColumn Header="Status" DisplayMemberBinding="{Binding ArrivalStatus.Status}"/>
+                    <GridViewColumn Header="Time out" DisplayMemberBinding="{Binding TimeOut, Converter={StaticResource TimeConverter}}"/>
+                    <GridViewColumn Header="Phone" DisplayMemberBinding="{Binding Guest.PhoneNumber}"/>
+                    <GridViewColumn Header="Modified" DisplayMemberBinding="{Binding ModifyDate, Converter={StaticResource DateConverter}}"/>
                     <GridViewColumn>
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <Button />
+                                <Button Content="Edit" Padding="10,0,10,0"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
@@ -117,7 +125,8 @@
 
         <DataGrid Grid.Column="1" Grid.Row="3" 
                   AutoGenerateColumns="False"
-                  Margin="10">
+                  Margin="10"
+                  >
             <DataGrid.ColumnHeaderStyle>
                 <Style TargetType="{x:Type DataGridColumnHeader}">
                     <Setter Property="HorizontalContentAlignment"
