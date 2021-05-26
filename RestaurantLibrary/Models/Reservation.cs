@@ -61,15 +61,20 @@ namespace RestaurantLibrary.Models
 
         public List<DinnerTable> Tables { get; set; } = new List<DinnerTable>();
 
-        private int _TotalSeats;
-        public int TotalSeats
+        private int TotalSeats
         {
-            get { return _TotalSeats; }
-            set
-            {
-                _TotalSeats = value;
-                OnPropertyChanged("TotalSeats");
+            get 
+            {                
+                return Tables.Sum(table => table.Seats);
             }
+        }
+
+        public int SeatBalance 
+        {
+            get
+            {
+                return TotalSeats - WantedSeats;
+            }    
         }
 
         private DateTime _TimeIn;

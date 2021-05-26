@@ -9,14 +9,12 @@ using System.Windows.Data;
 
 namespace RestaurantWPF.ViewModels.Converters
 {
-    class TablesToSeatsConverter : IValueConverter
+    public class StatusToColorConverter : IValueConverter
     {
-        // This will perhaps not be used now that my Reservation class has been updated get totalSeats as a property!
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            List<DinnerTable> tables = (List<DinnerTable>)value;
-            int totalSeats = tables.Sum(table => table.Seats);
-            return totalSeats;
+            ArrivalStatus arrivalStatus = (ArrivalStatus)value;
+            return false;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

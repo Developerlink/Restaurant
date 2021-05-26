@@ -18,9 +18,7 @@ namespace RestaurantCL
 
             DinnerTable newTable = new DinnerTable("31");
 
-            Console.WriteLine(db.CreateDinnerTable(newTable));
-
-            
+            Console.WriteLine(db.CreateDinnerTable(newTable));            
 
             List<DinnerTable> buffetTables = new List<DinnerTable>();
             List<DinnerTable> sushiTables = new List<DinnerTable>();

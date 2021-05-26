@@ -6,9 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using RestaurantLibrary;
 using RestaurantLibrary.DataAccess;
 using RestaurantLibrary.Models;
+using RestaurantWPF.ViewModels.Commands;
 
 namespace RestaurantWPF.ViewModels
 {
@@ -49,16 +51,33 @@ namespace RestaurantWPF.ViewModels
             }
         }
 
+        public int MyProperty { get; set; }
+
+        private Reservation _SelectedReservation;
+        public Reservation SelectedReservation
+        {
+            get { return _SelectedReservation; }
+            set
+            {
+                _SelectedReservation = value;
+                OnPropertyChanged("SelectedReservation");
+            }
+        }
+
         private ObservableCollection<Reservation> _SelectedDateReservations;
         public ObservableCollection<Reservation> SelectedDateReservations
         {
             get { return _SelectedDateReservations; }
             set
             {
-                _SelectedDateReservations = value;
+                _SelectedDateReservations = value;                   
                 OnPropertyChanged("SelectedDateReservations");
             }
         }
+        public List<ArrivalStatus> ArrivalStatuses { get; set; }
+
+        public ICommand UpdateReservationOverviewCommand { get; set; }
+        public ICommand ChangeArrivalStatusCommand { get; set; }
 
         // CONSTRUCTOR
         public ReservationManagerViewModel()
@@ -68,17 +87,30 @@ namespace RestaurantWPF.ViewModels
             int restaurantId = 1;
             SelectedRestaurant = conn.GetRestaurant(restaurantId);
             SelectedArea = SelectedRestaurant.Areas[0];
-            UpdateSelectedDateReservations(SelectedDate, SelectedArea);
+            ArrivalStatuses = conn.GetArrivalStatuses();
+            UpdateSelectedDateReservations();
+            LoadCommands();
         }
 
         // METHODS
-        private void UpdateSelectedDateReservations(DateTime selectedDate, Area selectedArea)
+        private void LoadCommands()
+        {
+            UpdateReservationOverviewCommand = new SimpleExecuteCommand(UpdateSelectedDateReservations);
+            ChangeArrivalStatusCommand = new SimpleExecuteCommand(UpdateSelectedDateReservations);
+        }
+        private void UpdateSelectedDateReservations()
         {
             SqlConnector conn = new SqlConnector();
             SelectedDateReservations = conn.GetReservations(SelectedDate, SelectedArea).ToObservableCollection();
         }
 
-
+        private void ChangeArrivalStatusForSelectedReservation(ArrivalStatus arrivalStatus)
+        {
+            SqlConnector conn = new SqlConnector();
+            SelectedReservation.ArrivalStatus = arrivalStatus;
+            conn.UpdateReservation(SelectedReservation);
+            UpdateSelectedDateReservations();
+        }
 
         // INotifyPropertyChanged INTERFACE IMPLEMENTATION.
         public event PropertyChangedEventHandler PropertyChanged;

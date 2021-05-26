@@ -65,15 +65,18 @@
     <Compile Include="ViewModels\Commands\CreateReservationCommand.cs" />
     <Compile Include="ViewModels\Commands\RemoveTableFromReservationCommand.cs" />
     <Compile Include="ViewModels\Commands\SelectAreaUpdateFreeTablesCommand.cs" />
+    <Compile Include="ViewModels\Commands\SimpleExecuteCommand.cs" />
     <Compile Include="ViewModels\Converters\AreaConverter.cs" />
     <Compile Include="ViewModels\Converters\DateConverter.cs" />
     <Compile Include="ViewModels\Converters\ReservationsToTotalNumberConverter.cs" />
+    <Compile Include="ViewModels\Converters\StatusToColorConverter.cs" />
     <Compile Include="ViewModels\Converters\TablesToSeatsConverter.cs" />
     <Compile Include="ViewModels\Converters\TablesToStringConverter.cs" />
     <Compile Include="ViewModels\Converters\TimeConverter.cs" />
     <Compile Include="ViewModels\ReservationEditorViewModel.cs" />
     <Compile Include="ViewModels\CreateTableViewModel.cs" />
     <Compile Include="ViewModels\ReservationManagerViewModel.cs" />
+    <Compile Include="ViewModels\Util\GridViewSort.cs" />
     <Compile Include="Views\CreateTableView.xaml.cs">
       <DependentUpon>CreateTableView.xaml</DependentUpon>
     </Compile>

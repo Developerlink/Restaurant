@@ -5,7 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RestaurantWPF.Views"
         xmlns:vm="clr-namespace:RestaurantWPF.ViewModels"
-        xmlns:cv="clr-namespace:RestaurantWPF.ViewModels.Converters"
+        xmlns:cv="clr-namespace:RestaurantWPF.ViewModels.Converters" 
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:util="clr-namespace:RestaurantWPF.ViewModels.Util"
         mc:Ignorable="d"
         Title="Table Overview" Height="450" Width="800"
         WindowState="Maximized">
@@ -47,12 +49,24 @@
                           ItemsSource="{Binding SelectedRestaurant.Areas}"
                           DisplayMemberPath="Name"
                           SelectedValuePath="Id"
-                          SelectedItem="{Binding SelectedArea, Mode=TwoWay}"/>
+                          SelectedItem="{Binding SelectedArea, Mode=TwoWay}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <i:InvokeCommandAction Command="{Binding UpdateReservationOverviewCommand}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </ComboBox>
             </StackPanel>
             <StackPanel Grid.Column="1" Margin="5">
                 <Label Content="Selected Date" FontSize="20"/>
                 <DatePicker FontSize="20"
-                            SelectedDate="{Binding SelectedDate}"/>
+                            SelectedDate="{Binding SelectedDate, Mode=TwoWay}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectedDateChanged">
+                            <i:InvokeCommandAction Command="{Binding UpdateReservationOverviewCommand}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </DatePicker>
             </StackPanel>
         </Grid>
 
@@ -64,7 +78,11 @@
         </StackPanel>
 
         <ListView Grid.Column="0" Grid.Row="3" Margin="10"
-                  ItemsSource="{Binding SelectedDateReservations}">
+                  ItemsSource="{Binding SelectedDateReservations}"
+                  SelectedItem="{Binding SelectedReservation}"
+                  IsSynchronizedWithCurrentItem="True"
+                  util:GridViewSort.AutoSort="True"
+                  util:GridViewSort.ShowSortGlyph="False">
             <ListView.Resources>
                 <Style TargetType="{x:Type GridViewColumnHeader}">
                     <Setter Property="HorizontalContentAlignment"
@@ -76,18 +94,42 @@
                     <Setter Property="Width"
                             Value="auto" />
                 </Style>
+                <Style TargetType="{x:Type ListViewItem}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ArrivalStatus.Status}"
+                      Value="John">
+                            <Setter Property="Background"
+                  Value="{Binding ArrivalStatus.Color}" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
             </ListView.Resources>
-            <ListView.View>
+            <ListView.View>                
                 <GridView>
-                    <GridViewColumn Header="Time in" DisplayMemberBinding="{Binding TimeIn, Converter={StaticResource TimeConverter}}"/>
-                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Guest.FullName}"/>
-                    <GridViewColumn Header="Numbers" DisplayMemberBinding="{Binding WantedSeats}"/>
-                    <GridViewColumn Header="Table(s)" DisplayMemberBinding="{Binding Tables, Converter={StaticResource TablesToStringConverter}}"/>
-                    <GridViewColumn Header="Seats" DisplayMemberBinding="{Binding Tables, Converter={StaticResource TablesToSeatsConverter}}"/>
-                    <GridViewColumn Header="Status" DisplayMemberBinding="{Binding ArrivalStatus.Status}"/>
-                    <GridViewColumn Header="Time out" DisplayMemberBinding="{Binding TimeOut, Converter={StaticResource TimeConverter}}"/>
+                    <GridViewColumn Header="Time in" 
+                                    DisplayMemberBinding="{Binding TimeIn, Converter={StaticResource TimeConverter}}"
+                                    util:GridViewSort.PropertyName="TimeIn"/>
+                    <GridViewColumn Header="Name" 
+                                    DisplayMemberBinding="{Binding Guest.FullName}"
+                                    util:GridViewSort.PropertyName="Guest.FullName"/>
+                    <GridViewColumn Header="Numbers" 
+                                    DisplayMemberBinding="{Binding WantedSeats}"
+                                    util:GridViewSort.PropertyName="WantedSeats"/>
+                    <GridViewColumn Header="Table(s)" 
+                                    DisplayMemberBinding="{Binding Tables, Converter={StaticResource TablesToStringConverter}}"/>
+                    <GridViewColumn Header="Seat balance" 
+                                    DisplayMemberBinding="{Binding SeatBalance}"
+                                    util:GridViewSort.PropertyName="SeatBalance"/>
+                    <GridViewColumn Header="Status" 
+                                    DisplayMemberBinding="{Binding ArrivalStatus.Status}"
+                                    util:GridViewSort.PropertyName="ArrivalStatus.Status"/>
+                    <GridViewColumn Header="Time out" 
+                                    DisplayMemberBinding="{Binding TimeOut, Converter={StaticResource TimeConverter}}"
+                                    util:GridViewSort.PropertyName="TimeOut"/>
                     <GridViewColumn Header="Phone" DisplayMemberBinding="{Binding Guest.PhoneNumber}"/>
-                    <GridViewColumn Header="Modified" DisplayMemberBinding="{Binding ModifyDate, Converter={StaticResource DateConverter}}"/>
+                    <GridViewColumn Header="Modified" 
+                                    DisplayMemberBinding="{Binding ModifyDate, Converter={StaticResource DateConverter}}"
+                                    util:GridViewSort.PropertyName="ModifyDate"/>
                     <GridViewColumn>
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
@@ -108,12 +150,15 @@
                 Margin="10"/>
 
         <ItemsControl Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Name="StatusesControl"
-                      ItemsSource="{Binding buttons}" Margin="10">
+                      ItemsSource="{Binding ArrivalStatuses}" Margin="10">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Button Content="{Binding Name}"
+                    <Button Content="{Binding Status}"
                             FontSize="20"
-                            Margin="5"/>
+                            Margin="5"
+                            Background="{Binding Color}"
+                            Command="{Binding Command}"
+                            CommandParameter="{Binding CommandParameter}"/>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
             <ItemsControl.ItemsPanel>
@@ -126,7 +171,9 @@
         <DataGrid Grid.Column="1" Grid.Row="3" 
                   AutoGenerateColumns="False"
                   Margin="10"
-                  >
+                  IsReadOnly="True"
+                  ItemsSource="{Binding SelectedDateReservations}"
+                  SelectedItem="{Binding SelectedReservation}">
             <DataGrid.ColumnHeaderStyle>
                 <Style TargetType="{x:Type DataGridColumnHeader}">
                     <Setter Property="HorizontalContentAlignment"
@@ -134,35 +181,35 @@
                     <Setter Property="Height"
                             Value="30" />
                     <Setter Property="Padding"
-                            Value="10,0,10,0" />
+                            Value="15,5,15,5" />
                     <Setter Property="Width"
                             Value="auto" />
                 </Style>
             </DataGrid.ColumnHeaderStyle>
             <DataGrid.Columns>
                 <!--1-->
-                <DataGridTextColumn Header="Time in" Binding="{Binding Name}" />
+                <DataGridTextColumn Header="Time in" Binding="{Binding TimeIn, Converter={StaticResource TimeConverter}}" />
                 <!--2-->
-                <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
+                <DataGridTextColumn Header="Name" Binding="{Binding Guest.FullName}" />
                 <!--3-->
-                <DataGridTextColumn Header="Numbers" Binding="{Binding Name}" />
+                <DataGridTextColumn Header="Numbers" Binding="{Binding WantedSeats}" />
                 <!--4-->
-                <DataGridTextColumn Header="Table(s)" Binding="{Binding Name}" />
+                <DataGridTextColumn Header="Table(s)" Binding="{Binding Tables, Converter={StaticResource TablesToStringConverter}}" />
                 <!--5-->
-                <DataGridTextColumn Header="Seats" Binding="{Binding Name}" />
+                <DataGridTextColumn Header="Seat Balance" Binding="{Binding SeatBalance}" />
                 <!--6-->
-                <DataGridTextColumn Header="Status" Binding="{Binding Name}" />
+                <DataGridTextColumn Header="Status" Binding="{Binding ArrivalStatus.Status}" />
                 <!--5-->
-                <DataGridTextColumn Header="Time out" Binding="{Binding Name}" />
+                <DataGridTextColumn Header="Time out" Binding="{Binding TimeOut, Converter={StaticResource TimeConverter}}" />
                 <!--5-->
-                <DataGridTextColumn Header="Phone" Binding="{Binding Name}" />
+                <DataGridTextColumn Header="Phone" Binding="{Binding Guest.PhoneNumber}" />
                 <!--5-->
-                <DataGridTextColumn Header="Modified" Binding="{Binding Name}" />
+                <DataGridTextColumn Header="Modified" Binding="{Binding ModifyDate, Converter={StaticResource DateConverter}}" />
 
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Content="Edit"/>
+                            <Button Content="Edit" Padding="10,0,10,0"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

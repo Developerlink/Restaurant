@@ -23,7 +23,7 @@ namespace RestaurantLibrary.DataAccess
 
             try
             {
-                using (SqlConnection conn = new SqlConnection(db))
+                using (SqlConnection conn = new SqlConnection(GlobalConfig.ConnString(db)))
                 {
                     using (SqlCommand cmd = new SqlCommand(sp, conn))
                     {
@@ -262,8 +262,9 @@ namespace RestaurantLibrary.DataAccess
                             while (reader.Read())
                             {
                                 ArrivalStatus arrivalStatus = new ArrivalStatus();
-                                arrivalStatus.Id = reader.GetInt32(0);
-                                arrivalStatus.Status = reader.GetString(1);
+                                arrivalStatus.Id = Convert.ToInt32(reader["id"]);
+                                arrivalStatus.Status = reader["status"].ToString();
+                                arrivalStatus.Color = reader["color"].ToString();
                                 arrivalStatuses.Add(arrivalStatus);
                             }
                             reader.Close();
@@ -352,6 +353,40 @@ namespace RestaurantLibrary.DataAccess
             }
             return reservations;
         }
+
+        public bool UpdateReservation(Reservation reservation)
+        {
+            // Stored procedure.
+            string sp = "sp_reservations_update_one";
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(GlobalConfig.ConnString(db)))
+                {
+                    using (SqlCommand cmd = new SqlCommand(sp, conn))
+                    {
+                        // Create INPUT parameters
+                        cmd.Parameters.Add(new SqlParameter("@id", reservation.Id));
+                        cmd.Parameters.Add(new SqlParameter("@arrival_status_id", reservation.ArrivalStatus.Id));
+                        cmd.Parameters.Add(new SqlParameter("@seats", reservation.WantedSeats));
+                        cmd.Parameters.Add(new SqlParameter("@time_in", reservation.TimeIn));
+                        cmd.Parameters.Add(new SqlParameter("@time_out", reservation.TimeOut));
+
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        conn.Open();
+                        cmd.ExecuteNonQuery();
+
+                    }
+                }
+                return true;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return false;
+        }
+
 
         protected virtual string GetConnectionInformation(SqlConnection cnn)
         {
