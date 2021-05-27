@@ -9,9 +9,9 @@ namespace RestaurantWPF
 {
     public class VMLocator
     {
-        private static ReservationEditorViewModel _CreateReservationViewModel = new ReservationEditorViewModel();
+        private static CreateReservationViewModel _CreateReservationViewModel = new CreateReservationViewModel();
         
-        public static ReservationEditorViewModel CreateReservationViewModel
+        public static CreateReservationViewModel CreateReservationViewModel
         {
             get
             {

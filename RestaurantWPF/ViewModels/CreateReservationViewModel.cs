@@ -14,7 +14,7 @@ using System.Windows.Input;
 
 namespace RestaurantWPF.ViewModels
 {
-    public class ReservationEditorViewModel : INotifyPropertyChanged
+    public class CreateReservationViewModel : INotifyPropertyChanged
     {
         private Restaurant _Restaurant;
         public Restaurant Restaurant
@@ -105,7 +105,7 @@ namespace RestaurantWPF.ViewModels
         public ICommand RemoveTableFromReservationCommand { get; set; }
 
         // CONSTRUCTOR
-        public ReservationEditorViewModel()
+        public CreateReservationViewModel()
         {
             SelectedTableFromFreeTables = new DinnerTable();
             SelectedTableFromReservationTables = new DinnerTable();
@@ -114,7 +114,9 @@ namespace RestaurantWPF.ViewModels
             CurrentFreeTables = new ObservableCollection<DinnerTable>();
             CurrentReservedTables = new ObservableCollection<DinnerTable>();
             SelectedArea = new Area();
+            Guest guest = new Guest();
             CurrentReservation = new Reservation();
+            CurrentReservation.Guest = guest;
             LoadData();
             LoadCommands();
         }
@@ -142,7 +144,14 @@ namespace RestaurantWPF.ViewModels
 
         // Methods
         private void CreateReservation(object obj)
-        {
+        {            
+            if (string.IsNullOrEmpty(CurrentReservation.Guest.FirstName))
+            {
+                CurrentReservation.Guest.FirstName = "Walk-in";
+            }
+            MessageBox.Show(CurrentReservation.Guest.FirstName);
+
+
             MessageBox.Show("Your reservation has been saved!");
         }
 

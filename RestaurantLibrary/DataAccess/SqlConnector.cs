@@ -36,12 +36,10 @@ namespace RestaurantLibrary.DataAccess
                         cmd.Parameters.Add(new SqlParameter("@Id", table.Id));
                         cmd.Parameters["@Id"].Direction = ParameterDirection.Output;
 
-
                         cmd.CommandType = CommandType.StoredProcedure;
                         conn.Open();
                         cmd.ExecuteNonQuery();
                         table.Id = (int)cmd.Parameters["@Id"].Value;
-
                     }
                 }
             }

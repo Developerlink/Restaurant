@@ -8,9 +8,9 @@
         xmlns:cv="clr-namespace:RestaurantWPF.ViewModels.Converters"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
         mc:Ignorable="d"
-        Title="Create Reservation" Height="900" Width="900">
+        Title="Create Reservation" Height="1200" Width="900">
     <Window.Resources>
-        <vm:ReservationEditorViewModel x:Key="vm"/>
+        <vm:CreateReservationViewModel x:Key="vm"/>
         <cv:AreaConverter x:Key="IdToArea" />
     </Window.Resources>
     <ScrollViewer>

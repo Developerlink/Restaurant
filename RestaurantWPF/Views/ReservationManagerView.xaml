@@ -18,8 +18,10 @@
         <cv:ReservationsToTotalNumberConverter x:Key="ReservationsToTotalNumberConverter"/>
         <cv:TablesToStringConverter x:Key="TablesToStringConverter"/>
         <cv:TablesToSeatsConverter x:Key="TablesToSeatsConverter"/>
+        <cv:ArrivalStatusIdToStringConverter x:Key="ArrivalStatusToStringConverter"/>
+        <cv:StringToColorConverter x:Key="StringToColorConverter"/>
     </Window.Resources>
-    
+
     <Grid DataContext="{StaticResource vm}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -74,10 +76,12 @@
                     Margin="10,0,10,0">
             <Label Content="{Binding SelectedDateReservations, Converter={StaticResource ReservationsToTotalNumberConverter}}"
                    ContentStringFormat="Total number: {0}"
-                   FontSize="20"/>            
+                   FontSize="20"/>
         </StackPanel>
 
         <ListView Grid.Column="0" Grid.Row="3" Margin="10"
+                  FontSize="15"
+                  FontWeight="DemiBold"
                   ItemsSource="{Binding SelectedDateReservations}"
                   SelectedItem="{Binding SelectedReservation}"
                   IsSynchronizedWithCurrentItem="True"
@@ -94,17 +98,42 @@
                     <Setter Property="Width"
                             Value="auto" />
                 </Style>
-                <Style TargetType="{x:Type ListViewItem}">
-                    <Style.Triggers>
+                <Style TargetType="{x:Type ListViewItem}">                    
+                    <Style.Triggers>                            
                         <DataTrigger Binding="{Binding ArrivalStatus.Status}"
-                      Value="John">
+                                     Value="Arrived">
                             <Setter Property="Background"
-                  Value="{Binding ArrivalStatus.Color}" />
+                                    Value="#DCDCDC" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ArrivalStatus.Status}"
+                                     Value="Seated">
+                            <Setter Property="Background"
+                                    Value="#5596FA" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ArrivalStatus.Status}"
+                                     Value="Order taken">
+                            <Setter Property="Background"
+                                    Value="#5CEDB1" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ArrivalStatus.Status}"
+                                     Value="Finished">
+                            <Setter Property="Background"
+                                    Value="#17D621" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ArrivalStatus.Status}"
+                                     Value="Cancelled">
+                            <Setter Property="Background"
+                                    Value="#E1341E" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ArrivalStatus.Status}"
+                                     Value="No show">
+                            <Setter Property="Background"
+                                    Value="#C3050E" />
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
             </ListView.Resources>
-            <ListView.View>                
+            <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Time in" 
                                     DisplayMemberBinding="{Binding TimeIn, Converter={StaticResource TimeConverter}}"
@@ -147,18 +176,19 @@
         <Button Grid.Column="1" Grid.Row="0"
                 Content="Create new reservation"
                 FontSize="20"
-                Margin="10"/>
+                Margin="10"
+                Command="{Binding }" Click="Button_Click"/>
+
 
         <ItemsControl Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Name="StatusesControl"
-                      ItemsSource="{Binding ArrivalStatuses}" Margin="10">
+                      Margin="10">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Button Content="{Binding Status}"
-                            FontSize="20"
+                    <Button Content="{Binding}"
+                            Background="{Binding}"
+                            Command="{Binding }"
                             Margin="5"
-                            Background="{Binding Color}"
-                            Command="{Binding Command}"
-                            CommandParameter="{Binding CommandParameter}"/>
+                            FontSize="20"/>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
             <ItemsControl.ItemsPanel>
@@ -166,11 +196,48 @@
                     <UniformGrid Columns="3" Rows="3" />
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
+            <Button Content="Awaiting"
+                            Background="#FFFFFF"
+                            Command="{Binding ChangeStatusToAwaitingCommand}"
+                            Margin="5"
+                            FontSize="20"/>
+            <Button Content="Arrived"
+                            Background="#DCDCDC"
+                            Command="{Binding ChangeStatusToArrivedCommand}"
+                            Margin="5"
+                            FontSize="20"/>
+            <Button Content="Seated"
+                            Background="#5596FA"
+                            Command="{Binding ChangeStatusToSeatedCommand}"
+                            Margin="5"
+                            FontSize="20"/>
+            <Button Content="Order taken"
+                            Background="#5CEDB1"
+                            Command="{Binding ChangeStatusToOrderTakenCommand}"
+                            Margin="5"
+                            FontSize="20"/>
+            <Button Content="Finished"
+                            Background="#17D621"
+                            Command="{Binding ChangeStatusToFinishedCommand}"
+                            Margin="5"
+                            FontSize="20"/>
+            <Button Content="Cancelled"
+                            Background="#E1341E"
+                            Command="{Binding ChangeStatusToCancelledCommand}"
+                            Margin="5"
+                            FontSize="20"/>
+            <Button Content="No show"
+                            Background="#C3050E"
+                            Command="{Binding ChangeStatusToNoShowCommand}"
+                            Margin="5"
+                            FontSize="20"/>
         </ItemsControl>
 
         <DataGrid Grid.Column="1" Grid.Row="3" 
                   AutoGenerateColumns="False"
                   Margin="10"
+                  FontSize="15"
+                  FontWeight="DemiBold"
                   IsReadOnly="True"
                   ItemsSource="{Binding SelectedDateReservations}"
                   SelectedItem="{Binding SelectedReservation}">
@@ -213,7 +280,6 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-
             </DataGrid.Columns>
         </DataGrid>
 
