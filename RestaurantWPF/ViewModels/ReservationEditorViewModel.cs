@@ -14,7 +14,7 @@ using System.Windows.Input;
 
 namespace RestaurantWPF.ViewModels
 {
-    public class CreateReservationViewModel : INotifyPropertyChanged
+    public class ReservationEditorViewModel : INotifyPropertyChanged
     {
         private Restaurant _Restaurant;
         public Restaurant Restaurant
@@ -38,17 +38,6 @@ namespace RestaurantWPF.ViewModels
             }
         }
 
-        private Guest _CurrentGuest;
-        public Guest CurrentGuest
-        {
-            get { return _CurrentGuest; }
-            set
-            {
-                _CurrentGuest = value;
-                OnPropertyChanged("CurrentGuest");
-            }
-        }
-
         private Reservation _CurrentReservation;
         public Reservation CurrentReservation
         {
@@ -59,11 +48,6 @@ namespace RestaurantWPF.ViewModels
                 OnPropertyChanged("CurrentReservation");
             }
         }
-
-        public ObservableCollection<DinnerTable> CurrentFreeTables { get; set; }
-        public ObservableCollection<DinnerTable> CurrentReservedTables { get; set; }
-
-        public List<ArrivalStatus> ArrivalStatuses { get; set; }
 
         private ArrivalStatus _SelectedArrivalStatus;
         public ArrivalStatus SelectedArrivalStatus
@@ -98,6 +82,71 @@ namespace RestaurantWPF.ViewModels
             }
         }
 
+        private DateTime _SelectedDate = DateTime.Now;
+        public DateTime SelectedDate
+        {
+            get { return _SelectedDate; }
+            set
+            {
+                _SelectedDate = value;
+                OnPropertyChanged("SelectedDate");
+            }
+        }
+
+        private TimeUnit _SelectedTimeIn;
+        public TimeUnit SelectedTimeIn
+        {
+            get { return _SelectedTimeIn; }
+            set
+            {
+                _SelectedTimeIn = value;
+                OnPropertyChanged("CurrentTimeIn");
+            }
+        }
+
+        private TimeUnit _SelectedTimeOut;
+        public TimeUnit SelectedTimeOut
+        {
+            get { return _SelectedTimeOut; }
+            set
+            {
+                _SelectedTimeOut = value;
+                OnPropertyChanged("CurrentTTimeOut");
+            }
+        }
+
+        private ObservableCollection<DinnerTable> _CurrentFreeTables;
+        public ObservableCollection<DinnerTable> CurrentFreeTables
+        {
+            get { return _CurrentFreeTables; }
+            set
+            {
+                _CurrentFreeTables = value;
+                OnPropertyChanged("CurrentFreeTables");
+            }
+        }
+
+        private ObservableCollection<DinnerTable> _CurrentReservedTables;
+        public ObservableCollection<DinnerTable> CurrentReservedTables
+        {
+            get { return _CurrentReservedTables; }
+            set
+            {
+                _CurrentReservedTables = value;
+                OnPropertyChanged("CurrentReservedTables");
+            }
+        }
+
+        private ObservableCollection<ArrivalStatus> _ArrivalStatuses;
+        public ObservableCollection<ArrivalStatus> ArrivalStatuses
+        {
+            get { return _ArrivalStatuses; }
+            set
+            {
+                _ArrivalStatuses = value;
+                OnPropertyChanged("ArrivalStatuses");
+            }
+        }
 
         public ICommand SelectAreaCommand { get; set; }
         public ICommand CreateReservationCommand { get; set; }
@@ -105,18 +154,15 @@ namespace RestaurantWPF.ViewModels
         public ICommand RemoveTableFromReservationCommand { get; set; }
 
         // CONSTRUCTOR
-        public CreateReservationViewModel()
+        public ReservationEditorViewModel()
         {
-            SelectedTableFromFreeTables = new DinnerTable();
-            SelectedTableFromReservationTables = new DinnerTable();
-            CurrentGuest = new Guest();
-            ArrivalStatuses = new List<ArrivalStatus>();
+            ArrivalStatuses = new ObservableCollection<ArrivalStatus>();
             CurrentFreeTables = new ObservableCollection<DinnerTable>();
             CurrentReservedTables = new ObservableCollection<DinnerTable>();
+            SelectedTableFromFreeTables = new DinnerTable();
+            SelectedTableFromReservationTables = new DinnerTable();
+            CurrentReservation = new Reservation();            
             SelectedArea = new Area();
-            Guest guest = new Guest();
-            CurrentReservation = new Reservation();
-            CurrentReservation.Guest = guest;
             LoadData();
             LoadCommands();
         }
@@ -130,7 +176,13 @@ namespace RestaurantWPF.ViewModels
             Restaurant = conn.GetRestaurant(restaurantId);
             SelectedArea = Restaurant.Areas[0];
             CurrentFreeTables = SelectedArea.DinnerTables.ToObservableCollection();
-            ArrivalStatuses = conn.GetArrivalStatuses();
+            ArrivalStatuses = conn.GetArrivalStatuses().ToObservableCollection();
+            SelectedArrivalStatus = ArrivalStatuses[0];
+            if (CurrentReservation.TimeIn != null)
+            {
+                SelectedDate = CurrentReservation.TimeIn;
+                
+            }
         }
 
         // Commands
@@ -152,7 +204,7 @@ namespace RestaurantWPF.ViewModels
             MessageBox.Show(CurrentReservation.Guest.FirstName);
 
 
-            MessageBox.Show("Your reservation has been saved!");
+            //MessageBox.Show("Your reservation has been saved!");
         }
 
         private bool CanCreateReservation(object obj)

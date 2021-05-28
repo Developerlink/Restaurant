@@ -9,7 +9,7 @@ namespace RestaurantLibrary.Models
     public class Guest : Person
     {
         public int TotalVisits { get; set; }
-        public List<DateTime> VisitHistory { get; set; }
+        public List<DateTime> VisitHistory { get; set; } = new List<DateTime>();
 
         public Guest()
         {

@@ -35,9 +35,20 @@ namespace RestaurantLibrary.Models
 
         public string FullName
         {
-            get { return $"{FirstName} {LastName}"; }
+            get
+            {
+                string fullName = "";
+                if (!string.IsNullOrEmpty(_FirstName))
+                {
+                    fullName += _FirstName;
+                }
+                if (!string.IsNullOrEmpty(_LastName))
+                {
+                    fullName += _LastName;
+                }
+                return fullName;
+            }
         }
-
 
         private int _PhoneNumber;
         public int PhoneNumber

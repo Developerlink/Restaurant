@@ -18,9 +18,9 @@ namespace RestaurantWPF.Views
     /// <summary>
     /// Interaction logic for CreateReservationView.xaml
     /// </summary>
-    public partial class CreateReservationView : Window
+    public partial class ReservationEditorView : Window
     {
-        public CreateReservationView()
+        public ReservationEditorView()
         {
             InitializeComponent();
         }

@@ -79,23 +79,20 @@
     <Compile Include="ViewModels\Commands\SelectAreaUpdateFreeTablesCommand.cs" />
     <Compile Include="ViewModels\Commands\SimpleExecuteCommand.cs" />
     <Compile Include="ViewModels\Converters\AreaConverter.cs" />
-    <Compile Include="ViewModels\Converters\ArrivalStatusIdToStringConverter.cs" />
     <Compile Include="ViewModels\Converters\DateConverter.cs" />
     <Compile Include="ViewModels\Converters\ReservationsToTotalNumberConverter.cs" />
-    <Compile Include="ViewModels\Converters\StatusToColorConverter.cs" />
     <Compile Include="ViewModels\Converters\StringToColorConverter.cs" />
-    <Compile Include="ViewModels\Converters\TablesToSeatsConverter.cs" />
     <Compile Include="ViewModels\Converters\TablesToStringConverter.cs" />
     <Compile Include="ViewModels\Converters\TimeConverter.cs" />
-    <Compile Include="ViewModels\CreateReservationViewModel.cs" />
+    <Compile Include="ViewModels\ReservationEditorViewModel.cs" />
     <Compile Include="ViewModels\CreateTableViewModel.cs" />
     <Compile Include="ViewModels\ReservationManagerViewModel.cs" />
     <Compile Include="ViewModels\Util\GridViewSort.cs" />
     <Compile Include="Views\CreateTableView.xaml.cs">
       <DependentUpon>CreateTableView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\CreateReservationView.xaml.cs">
-      <DependentUpon>CreateReservationView.xaml</DependentUpon>
+    <Compile Include="Views\ReservationEditorView.xaml.cs">
+      <DependentUpon>ReservationEditorView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ReservationManagerView.xaml.cs">
       <DependentUpon>ReservationManagerView.xaml</DependentUpon>
@@ -109,7 +106,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\CreateReservationView.xaml">
+    <Page Include="Views\ReservationEditorView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

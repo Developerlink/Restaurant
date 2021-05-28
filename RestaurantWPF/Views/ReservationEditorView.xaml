@@ -1,4 +1,4 @@
-﻿<Window x:Class="RestaurantWPF.Views.CreateReservationView"
+﻿<Window x:Class="RestaurantWPF.Views.ReservationEditorView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -10,7 +10,7 @@
         mc:Ignorable="d"
         Title="Create Reservation" Height="1200" Width="900">
     <Window.Resources>
-        <vm:CreateReservationViewModel x:Key="vm"/>
+        <vm:ReservationEditorViewModel x:Key="vm"/>
         <cv:AreaConverter x:Key="IdToArea" />
     </Window.Resources>
     <ScrollViewer>
@@ -50,7 +50,7 @@
                  Grid.Column="1"
                  FontSize="30"                 
                  Margin="10"
-                     Text="{Binding CurrentGuest.FirstName, Mode=TwoWay}"/>
+                     Text="{Binding CurrentReservation.Guest.FirstName, Mode=TwoWay}"/>
 
             <Label Grid.Row="2"
                Grid.Column="0"
@@ -60,7 +60,7 @@
                  Grid.Column="1"
                  FontSize="30"                 
                  Margin="10"
-                     Text="{Binding CurrentGuest.LastName, Mode=TwoWay}"/>
+                     Text="{Binding CurrentReservation.Guest.LastName, Mode=TwoWay}"/>
 
             <Label Grid.Row="3"
                Grid.Column="0"
@@ -82,8 +82,8 @@
                   Height="100"
                   FontSize="15"                  
                   ScrollViewer.CanContentScroll="True"
-                      ItemsSource="{Binding CurrentReservation.Tables, Mode=TwoWay}"
-                      SelectedItem="{Binding SelectedTableFromReservationTables}">
+                      ItemsSource="{Binding CurrentReservation.Tables}"
+                      SelectedItem="{Binding SelectedTableFromReservationTables, Mode=OneWayToSource}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
                         <i:InvokeCommandAction Command="{Binding RemoveTableFromReservationCommand}" />
@@ -106,7 +106,7 @@
                  Grid.Column="1"
                  FontSize="30"                 
                  Margin="10"
-                     Text="{Binding CurrentGuest.PhoneNumber, Mode=TwoWay}"/>
+                     Text="{Binding CurrentReservation.Guest.PhoneNumber, Mode=TwoWay}"/>
 
             <Label Grid.Row="6"
                Grid.Column="0"
@@ -116,7 +116,7 @@
                     Grid.Column="1"
                     FontSize="30"
                     Margin="10" 
-                        SelectedDate="{Binding CurrentReservation.TimeIn, Mode=OneWayToSource}"/>
+                        SelectedDate="{Binding CurrentReservation.TimeIn, Mode=TwoWay}"/>
 
             <Label Grid.Row="7"
                Grid.Column="0"
@@ -133,7 +133,7 @@
                 <TextBox Grid.Column="0" 
                      Margin="5"
                      FontSize="30"
-                         Text="{Binding CurrentReservation.TimeIn, Mode=OneWayToSource}"/>
+                         Text="{Binding CurrentTimeIn.Hour, Mode=TwoWay}"/>
                 <Label Grid.Column="1"
                    Margin="5"
                    FontSize="30"
@@ -141,7 +141,7 @@
                 <TextBox Grid.Column="2"
                      Margin="5"
                      FontSize="30"
-                         Text="{Binding CurrentReservation.TimeIn, Mode=OneWayToSource}"/>
+                         Text="{Binding CurrentTimeIn.Minute, Mode=TwoWay}"/>
             </Grid>
             <!--Binding , Converter={StaticResource TimeConverter}-->
 
@@ -161,7 +161,7 @@
                 <TextBox Grid.Column="0" 
                      Margin="5"
                      FontSize="30"
-                         Text="{Binding CurrentReservation.TimeOut, Mode=OneWayToSource}"/>
+                         Text="{Binding CurrentTTimeOut.Hour, Mode=TwoWay}"/>
                 <Label Grid.Column="1"
                    Margin="5"
                    FontSize="30"
@@ -169,7 +169,7 @@
                 <TextBox Grid.Column="2"
                      Margin="5"
                      FontSize="30"
-                         Text="{Binding CurrentReservation.TimeOut, Mode=OneWayToSource}"/>
+                         Text="{Binding CurrentTTimeOut.Minute, Mode=TwoWay}"/>
             </Grid>
 
             <Label Grid.Row="9"
@@ -183,7 +183,8 @@
                   ItemsSource="{Binding ArrivalStatuses}"
                   DisplayMemberPath="Status"
                   SelectedValuePath="Id"
-                      SelectedItem="{Binding CurrentReservation.ArrivalStatus, Mode=OneWayToSource}"/>
+                      SelectedItem="{Binding SelectedArrivalStatus, Mode=TwoWay}"
+                      />
 
 
             <Button Grid.Row="11"
@@ -224,7 +225,7 @@
                       FontSize="20"
                       ScrollViewer.CanContentScroll="True"
                       ItemsSource="{Binding CurrentFreeTables}"
-                      SelectedItem="{Binding SelectedTableFromFreeTables}">
+                      SelectedItem="{Binding SelectedTableFromFreeTables, Mode=OneWayToSource}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
                         <i:InvokeCommandAction Command="{Binding AddTableToReservationCommand}" />

@@ -106,6 +106,8 @@ namespace RestaurantWPF.ViewModels
             SelectedArrivalStatus = new ArrivalStatus();
             UpdateSelectedDateReservations();
             LoadCommands();
+
+            //MessageBox.Show(SelectedRestaurant.ToString());
         }
 
         // METHODS

@@ -54,6 +54,7 @@
     <Compile Include="Models\Person.cs" />
     <Compile Include="Models\Reservation.cs" />
     <Compile Include="Models\Restaurant.cs" />
+    <Compile Include="Models\TimeUnit.cs" />
     <Compile Include="Models\Waiter.cs" />
     <Compile Include="RestaurantLogic.cs" />
     <Compile Include="DataAccess\SqlConnector.cs" />

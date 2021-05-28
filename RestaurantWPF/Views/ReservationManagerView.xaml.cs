@@ -27,7 +27,7 @@ namespace RestaurantWPF.Views
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            CreateReservationView window = new CreateReservationView();
+            ReservationEditorView window = new ReservationEditorView();
             window.ShowDialog();
         }
     }

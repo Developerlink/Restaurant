@@ -88,6 +88,12 @@ namespace RestaurantLibrary.Models
             }
         }
 
+        private int _TimeInHours;
+        public int TimeInHours
+        {
+            get { return _TimeInHours; }
+        }
+
         private DateTime? _TimeOut;
         public DateTime? TimeOut
         {
@@ -100,7 +106,15 @@ namespace RestaurantLibrary.Models
         }
 
         public DateTime CreateDate { get; set; }
-        public DateTime ModifyDate { get; set; }        
+        public DateTime ModifyDate { get; set; }
+
+
+        public Reservation()
+        {
+            Guest = new Guest();
+            ArrivalStatus = new ArrivalStatus();
+        }
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 

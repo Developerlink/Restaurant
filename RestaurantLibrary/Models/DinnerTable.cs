@@ -19,7 +19,7 @@ namespace RestaurantLibrary.Models
 
         }
 
-        public DinnerTable(string name)
+        public DinnerTable(string name, int seats = 2)
         {
             Name = name;
         }

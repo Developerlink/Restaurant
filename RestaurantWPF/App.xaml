@@ -4,7 +4,7 @@
              xmlns:local="clr-namespace:RestaurantWPF"
              xmlns:vm="clr-namespace:RestaurantWPF.ViewModels"
              xmlns:converter="clr-namespace:RestaurantWPF.ViewModels.Converters"             
-             StartupUri="Views/ReservationManagerView.xaml">
+             StartupUri="Views/ReservationEditorView.xaml">
     <Application.Resources>
         <ResourceDictionary>
             <Style x:Key="InputLabel" TargetType="Label">

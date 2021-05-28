@@ -17,8 +17,6 @@
         <cv:DateConverter x:Key="DateConverter"/>
         <cv:ReservationsToTotalNumberConverter x:Key="ReservationsToTotalNumberConverter"/>
         <cv:TablesToStringConverter x:Key="TablesToStringConverter"/>
-        <cv:TablesToSeatsConverter x:Key="TablesToSeatsConverter"/>
-        <cv:ArrivalStatusIdToStringConverter x:Key="ArrivalStatusToStringConverter"/>
         <cv:StringToColorConverter x:Key="StringToColorConverter"/>
     </Window.Resources>
 
