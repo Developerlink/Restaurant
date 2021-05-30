@@ -82,6 +82,28 @@ namespace RestaurantWPF.ViewModels
             }
         }
 
+        private Guest _SelectedGuets;
+        public Guest SelectedGuest
+        {
+            get { return _SelectedGuets; }
+            set
+            {
+                _SelectedGuets = value;
+                OnPropertyChanged("SelectedGuest");
+            }
+        }
+
+        private int _SelectedWantedSeats;
+        public int SelectedWantedSeats
+        {
+            get { return _SelectedWantedSeats; }
+            set
+            {
+                _SelectedWantedSeats = value;
+                OnPropertyChanged("SelectedWantedSeats");
+            }
+        }
+
         private DateTime _SelectedDate = DateTime.Now;
         public DateTime SelectedDate
         {
@@ -126,13 +148,13 @@ namespace RestaurantWPF.ViewModels
             }
         }
 
-        private ObservableCollection<DinnerTable> _CurrentReservedTables;
-        public ObservableCollection<DinnerTable> CurrentReservedTables
+        private ObservableCollection<DinnerTable> _SelectedReservedTables;
+        public ObservableCollection<DinnerTable> SelectedReservedTables
         {
-            get { return _CurrentReservedTables; }
+            get { return _SelectedReservedTables; }
             set
             {
-                _CurrentReservedTables = value;
+                _SelectedReservedTables = value;
                 OnPropertyChanged("CurrentReservedTables");
             }
         }
@@ -158,31 +180,61 @@ namespace RestaurantWPF.ViewModels
         {
             ArrivalStatuses = new ObservableCollection<ArrivalStatus>();
             CurrentFreeTables = new ObservableCollection<DinnerTable>();
-            CurrentReservedTables = new ObservableCollection<DinnerTable>();
+            SelectedReservedTables = new ObservableCollection<DinnerTable>();
             SelectedTableFromFreeTables = new DinnerTable();
             SelectedTableFromReservationTables = new DinnerTable();
             CurrentReservation = new Reservation();            
             SelectedArea = new Area();
-            LoadData();
+            LoadRestaurantData();
             LoadCommands();
         }
 
-        // Properties
-        private void LoadData()
+        private void LoadRestaurantData()
         {
             SqlConnector conn = new SqlConnector();
             // Restaurant Id is hardcoded because I only have 1 restaurant, else it should have been selected by the user.
             int restaurantId = 1;
             Restaurant = conn.GetRestaurant(restaurantId);
             SelectedArea = Restaurant.Areas[0];
+            if (CurrentReservation.Tables.Any())
+            {
+                SelectedReservedTables = CurrentReservation.Tables.ToObservableCollection();
+            }
             CurrentFreeTables = SelectedArea.DinnerTables.ToObservableCollection();
             ArrivalStatuses = conn.GetArrivalStatuses().ToObservableCollection();
             SelectedArrivalStatus = ArrivalStatuses[0];
-            if (CurrentReservation.TimeIn != null)
+            if (CurrentReservation != null)
             {
-                SelectedDate = CurrentReservation.TimeIn;
-                
+                LoadCurrentReservationData();
             }
+            
+        }
+
+        private void LoadCurrentReservationData()
+        {
+            // If guest is not empty then transfer the data into the VM's binded guest object.
+            if (CurrentReservation.Guest != null)
+            {
+                SelectedGuest = CurrentReservation.Guest;
+            }
+            // If there are tables then transfer them to the VM's observablecollection of reserved tables.
+            if (CurrentReservation.Tables.Any())
+            {
+                SelectedReservedTables = CurrentReservation.Tables.ToObservableCollection();
+                // Find the area of the first table and set the VM's selected area to match it. 
+                foreach (var area in Restaurant.Areas)
+                {
+                    if (area.Id == SelectedReservedTables[0].AreaId)
+                    {
+                        SelectedArea = area;
+                    }
+                }
+                UpdateCurrentFreeTables();
+            }
+            SelectedDate = CurrentReservation.TimeIn;
+            SelectedTimeIn.Hour = CurrentReservation.TimeIn.Hour;
+            SelectedTimeIn.Minute = CurrentReservation.TimeIn.Minute;
+            SelectedArrivalStatus = CurrentReservation.ArrivalStatus;
         }
 
         // Commands
@@ -224,9 +276,9 @@ namespace RestaurantWPF.ViewModels
             {
                 CurrentFreeTables.Add(t);
             }
-            if (CurrentReservation.Tables.Any())
+            if (SelectedReservedTables.Any())
             {
-                foreach (var t in CurrentReservation.Tables)
+                foreach (var t in SelectedReservedTables)
                 {
                     CurrentFreeTables.Remove(t);
                 }
@@ -235,17 +287,24 @@ namespace RestaurantWPF.ViewModels
 
         private void AddTableToCurrentReservation()
         {
-            if (_SelectedTableFromFreeTables != null)
+            if (SelectedTableFromFreeTables != null)
             {
-                CurrentReservation.Tables.Add(SelectedTableFromFreeTables);                
-                UpdateCurrentFreeTables();
+                SelectedReservedTables.Add(SelectedTableFromFreeTables);
+                CurrentFreeTables.Remove(SelectedTableFromFreeTables);
+                //UpdateCurrentFreeTables();
+                SelectedTableFromFreeTables = null;
             }
         }
 
         private void RemoveTableFromCurrentReservation()
         {   
-                CurrentReservation.Tables.Remove(SelectedTableFromReservationTables);
+            if (SelectedTableFromReservationTables != null)
+            {
+                SelectedReservedTables.Remove(SelectedTableFromReservationTables);
+                //CurrentFreeTables.Add(SelectedTableFromReservationTables);
                 UpdateCurrentFreeTables();            
+                SelectedTableFromReservationTables = null;
+            }
         }
 
 

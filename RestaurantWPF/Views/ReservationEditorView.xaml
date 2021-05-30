@@ -50,7 +50,7 @@
                  Grid.Column="1"
                  FontSize="30"                 
                  Margin="10"
-                     Text="{Binding CurrentReservation.Guest.FirstName, Mode=TwoWay}"/>
+                     Text="{Binding SelectedGuest.FirstName, Mode=TwoWay}"/>
 
             <Label Grid.Row="2"
                Grid.Column="0"
@@ -60,7 +60,7 @@
                  Grid.Column="1"
                  FontSize="30"                 
                  Margin="10"
-                     Text="{Binding CurrentReservation.Guest.LastName, Mode=TwoWay}"/>
+                     Text="{Binding SelectedGuest.LastName, Mode=TwoWay}"/>
 
             <Label Grid.Row="3"
                Grid.Column="0"
@@ -70,7 +70,7 @@
                  Grid.Column="1"
                  FontSize="30"                 
                  Margin="10"
-                 Text="{Binding CurrentReservation.WantedSeats, Mode=TwoWay}"/>
+                 Text="{Binding SelectedWantedSeats, Mode=TwoWay}"/>
 
             <Label Grid.Row="4"
                Grid.Column="0"
@@ -82,7 +82,7 @@
                   Height="100"
                   FontSize="15"                  
                   ScrollViewer.CanContentScroll="True"
-                      ItemsSource="{Binding CurrentReservation.Tables}"
+                      ItemsSource="{Binding CurrentReservedTables}"
                       SelectedItem="{Binding SelectedTableFromReservationTables, Mode=OneWayToSource}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
@@ -106,7 +106,7 @@
                  Grid.Column="1"
                  FontSize="30"                 
                  Margin="10"
-                     Text="{Binding CurrentReservation.Guest.PhoneNumber, Mode=TwoWay}"/>
+                     Text="{Binding SelectedGuest.PhoneNumber, Mode=TwoWay}"/>
 
             <Label Grid.Row="6"
                Grid.Column="0"
@@ -116,7 +116,7 @@
                     Grid.Column="1"
                     FontSize="30"
                     Margin="10" 
-                        SelectedDate="{Binding CurrentReservation.TimeIn, Mode=TwoWay}"/>
+                        SelectedDate="{Binding SelectedDate, Mode=TwoWay}"/>
 
             <Label Grid.Row="7"
                Grid.Column="0"
@@ -133,7 +133,7 @@
                 <TextBox Grid.Column="0" 
                      Margin="5"
                      FontSize="30"
-                         Text="{Binding CurrentTimeIn.Hour, Mode=TwoWay}"/>
+                         Text="{Binding SelectedTimeIn.Hour, Mode=TwoWay}"/>
                 <Label Grid.Column="1"
                    Margin="5"
                    FontSize="30"
@@ -141,7 +141,7 @@
                 <TextBox Grid.Column="2"
                      Margin="5"
                      FontSize="30"
-                         Text="{Binding CurrentTimeIn.Minute, Mode=TwoWay}"/>
+                         Text="{Binding SelectedTimeIn.Minute, Mode=TwoWay}"/>
             </Grid>
             <!--Binding , Converter={StaticResource TimeConverter}-->
 
@@ -161,7 +161,7 @@
                 <TextBox Grid.Column="0" 
                      Margin="5"
                      FontSize="30"
-                         Text="{Binding CurrentTTimeOut.Hour, Mode=TwoWay}"/>
+                         Text="{Binding SelectedTimeOut.Hour, Mode=TwoWay}"/>
                 <Label Grid.Column="1"
                    Margin="5"
                    FontSize="30"
@@ -169,7 +169,7 @@
                 <TextBox Grid.Column="2"
                      Margin="5"
                      FontSize="30"
-                         Text="{Binding CurrentTTimeOut.Minute, Mode=TwoWay}"/>
+                         Text="{Binding SelectedTimeOut.Minute, Mode=TwoWay}"/>
             </Grid>
 
             <Label Grid.Row="9"

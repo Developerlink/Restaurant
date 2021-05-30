@@ -87,23 +87,7 @@ namespace RestaurantLibrary.Models
                 OnPropertyChanged("TimeIn");
             }
         }
-
-        private int _TimeInHours;
-        public int TimeInHours
-        {
-            get { return _TimeInHours; }
-        }
-
-        private DateTime? _TimeOut;
-        public DateTime? TimeOut
-        {
-            get { return _TimeOut; }
-            set
-            {
-                _TimeOut = value;
-                OnPropertyChanged("TimeOut");
-            }
-        }
+        
 
         public DateTime CreateDate { get; set; }
         public DateTime ModifyDate { get; set; }
