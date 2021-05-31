@@ -15,7 +15,7 @@ namespace RestaurantLibrary.Models
             get { return _Hour; }
             set
             {
-                if (value < 0 || 23 < value)
+                if (0 <= value || value >= 23)
                 {
                     _Hour = value;
                 }
@@ -33,7 +33,7 @@ namespace RestaurantLibrary.Models
             get { return _Minute; }
             set
             {
-                if (value < 0 || 59 < value)
+                if (0 <= value || value >= 59)
                 {
                     _Minute = value;
                 }

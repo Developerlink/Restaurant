@@ -31,6 +31,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -50,6 +51,7 @@
     <Compile Include="Models\DinnerTable.cs" />
     <Compile Include="Models\Guest.cs" />
     <Compile Include="Models\IEmployee.cs" />
+    <Compile Include="Models\IEntity.cs" />
     <Compile Include="Models\OpeningTime.cs" />
     <Compile Include="Models\Person.cs" />
     <Compile Include="Models\Reservation.cs" />

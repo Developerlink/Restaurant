@@ -183,8 +183,11 @@ namespace RestaurantWPF.ViewModels
             SelectedReservedTables = new ObservableCollection<DinnerTable>();
             SelectedTableFromFreeTables = new DinnerTable();
             SelectedTableFromReservationTables = new DinnerTable();
-            CurrentReservation = new Reservation();            
+            CurrentReservation = new Reservation();
             SelectedArea = new Area();
+            SelectedTimeIn = new TimeUnit();
+            SelectedTimeOut = new TimeUnit();
+            SelectedGuest = new Guest();
             LoadRestaurantData();
             LoadCommands();
         }
@@ -203,11 +206,12 @@ namespace RestaurantWPF.ViewModels
             CurrentFreeTables = SelectedArea.DinnerTables.ToObservableCollection();
             ArrivalStatuses = conn.GetArrivalStatuses().ToObservableCollection();
             SelectedArrivalStatus = ArrivalStatuses[0];
-            if (CurrentReservation != null)
+
+            if (CurrentReservation.Id != 0)
             {
                 LoadCurrentReservationData();
             }
-            
+
         }
 
         private void LoadCurrentReservationData()
@@ -248,21 +252,44 @@ namespace RestaurantWPF.ViewModels
 
         // Methods
         private void CreateReservation(object obj)
-        {            
-            if (string.IsNullOrEmpty(CurrentReservation.Guest.FirstName))
+        {
+            CurrentReservation.Guest = SelectedGuest;
+            CurrentReservation.Area = SelectedArea;
+            CurrentReservation.ArrivalStatus = SelectedArrivalStatus;
+            CurrentReservation.WantedSeats = SelectedWantedSeats;
+            foreach (var table in SelectedReservedTables)
             {
-                CurrentReservation.Guest.FirstName = "Walk-in";
+                CurrentReservation.Tables.Add(table);
+            }         
+            CurrentReservation.TimeIn = SelectedDate.ChangeTime(SelectedTimeIn.Hour, SelectedTimeIn.Minute);
+            if (SelectedTimeOut != null)
+            {
+                CurrentReservation.TimeOut = new DateTime();
+                CurrentReservation.TimeOut = SelectedDate.ChangeTime(SelectedTimeOut.Hour, SelectedTimeOut.Minute);
             }
-            MessageBox.Show(CurrentReservation.Guest.FirstName);
+            if (!string.IsNullOrEmpty(SelectedGuest.FirstName) || !string.IsNullOrEmpty(SelectedGuest.LastName))
+            {
+                CurrentReservation.Guest = SelectedGuest;
+            }
 
+            string result = CurrentReservation.IsValid();
+            if (result == "true")
+            {
+                SqlConnector conn = new SqlConnector();
+                conn.CreateReservation(CurrentReservation);
+                MessageBox.Show("Your reservation has been saved!");
+            }
+            else
+            {
+                MessageBox.Show(result);
+            }
 
-            //MessageBox.Show("Your reservation has been saved!");
         }
 
         private bool CanCreateReservation(object obj)
         {
             bool result = true;
-            if (CurrentReservation.WantedSeats == 0)
+            if (SelectedWantedSeats == 0)
             {
                 result = false;
             }
@@ -297,12 +324,12 @@ namespace RestaurantWPF.ViewModels
         }
 
         private void RemoveTableFromCurrentReservation()
-        {   
+        {
             if (SelectedTableFromReservationTables != null)
             {
                 SelectedReservedTables.Remove(SelectedTableFromReservationTables);
                 //CurrentFreeTables.Add(SelectedTableFromReservationTables);
-                UpdateCurrentFreeTables();            
+                UpdateCurrentFreeTables();
                 SelectedTableFromReservationTables = null;
             }
         }

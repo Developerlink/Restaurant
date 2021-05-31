@@ -82,7 +82,7 @@
                   Height="100"
                   FontSize="15"                  
                   ScrollViewer.CanContentScroll="True"
-                      ItemsSource="{Binding CurrentReservedTables}"
+                      ItemsSource="{Binding SelectedReservedTables}"
                       SelectedItem="{Binding SelectedTableFromReservationTables, Mode=OneWayToSource}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
