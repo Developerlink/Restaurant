@@ -190,6 +190,7 @@ namespace RestaurantWPF.ViewModels
             SelectedGuest = new Guest();
             LoadRestaurantData();
             LoadCommands();
+            LoadDummyData();
         }
 
         private void LoadRestaurantData()
@@ -212,6 +213,19 @@ namespace RestaurantWPF.ViewModels
                 LoadCurrentReservationData();
             }
 
+        }
+
+        private void LoadDummyData()
+        {
+            SelectedGuest.FirstName = "Diana";
+            SelectedGuest.LastName = "Prince";
+            SelectedGuest.PhoneNumber = 87698769;
+            SelectedWantedSeats = 4;
+            SelectedTimeIn.Hour = 18;
+            SelectedTimeIn.Minute = 30;
+            SelectedReservedTables.Add(CurrentFreeTables[0]);
+            SelectedReservedTables.Add(CurrentFreeTables[1]);
+            UpdateCurrentFreeTables();
         }
 
         private void LoadCurrentReservationData()
@@ -262,7 +276,7 @@ namespace RestaurantWPF.ViewModels
                 CurrentReservation.Tables.Add(table);
             }         
             CurrentReservation.TimeIn = SelectedDate.ChangeTime(SelectedTimeIn.Hour, SelectedTimeIn.Minute);
-            if (SelectedTimeOut != null)
+            if (SelectedTimeOut.Hour != 0 && SelectedTimeOut.Minute != 0)
             {
                 CurrentReservation.TimeOut = new DateTime();
                 CurrentReservation.TimeOut = SelectedDate.ChangeTime(SelectedTimeOut.Hour, SelectedTimeOut.Minute);
@@ -276,6 +290,12 @@ namespace RestaurantWPF.ViewModels
             if (result == "true")
             {
                 SqlConnector conn = new SqlConnector();
+                // If guest is not null then insert or update in people table.
+                if (CurrentReservation.Guest != null)
+                {
+                    conn.CreateOrUpdateGuest(CurrentReservation.Guest);
+                }
+                // Whether guest is null or not does not affect the reservation itself. 
                 conn.CreateReservation(CurrentReservation);
                 MessageBox.Show("Your reservation has been saved!");
             }

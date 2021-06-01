@@ -392,16 +392,15 @@ namespace RestaurantLibrary.DataAccess
                         {
                             cmd.Parameters.Add(new SqlParameter("@person_id", reservation.Guest.Id));
                         }
-                        cmd.Parameters.Add(new SqlParameter("@person_fname", reservation.Guest.FirstName));
-                        cmd.Parameters.Add(new SqlParameter("@person_lname", reservation.Guest.LastName));
-                        cmd.Parameters.Add(new SqlParameter("@person_phone", reservation.Guest.PhoneNumber));
                         cmd.Parameters.Add(new SqlParameter("@arrival_status_id", reservation.ArrivalStatus.Id));
                         cmd.Parameters.Add(new SqlParameter("@seats", reservation.WantedSeats));
                         cmd.Parameters.Add(new SqlParameter("@time_in", reservation.TimeIn));
-                        cmd.Parameters.Add(new SqlParameter("@time_out", reservation.TimeOut));
-
+                        if (reservation.TimeOut.Year != 1)
+                        {
+                            cmd.Parameters.Add(new SqlParameter("@time_out", reservation.TimeOut));
+                        }
                         cmd.Parameters.Add(new SqlParameter("@id", reservation.Id));
-                        cmd.Parameters["id"].Direction = ParameterDirection.Output;
+                        cmd.Parameters["@id"].Direction = ParameterDirection.Output;
 
                         cmd.CommandType = CommandType.StoredProcedure;
                         conn.Open();
@@ -415,11 +414,48 @@ namespace RestaurantLibrary.DataAccess
                 {
                     MessageBox.Show(e.Message);
                 }
-
-                // Insert tables in the table_reservations table.
             }
 
             return false;
+        }
+
+        public void CreateOrUpdateGuest(Guest guest)
+        {
+            string sp = "sp_people_insert_update";
+
+            using (SqlConnection conn = new SqlConnection(GlobalConfig.ConnString(db)))
+            {
+                try
+                {
+                    using (SqlCommand cmd = new SqlCommand(sp, conn))
+                    {
+                        try
+                        {
+                            cmd.Parameters.Add(new SqlParameter("@PersonId", guest.Id));
+                            cmd.Parameters.Add(new SqlParameter("@FirstName", guest.FirstName));
+                            cmd.Parameters.Add(new SqlParameter("@LastName", guest.LastName));
+                            cmd.Parameters.Add(new SqlParameter("@Phone", guest.PhoneNumber));
+                            cmd.Parameters.Add(new SqlParameter("@Email", guest.Email));
+
+                            cmd.Parameters.Add(new SqlParameter("@Id", guest.Id));
+                            cmd.Parameters["@Id"].Direction = ParameterDirection.Output;
+
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            conn.Open();
+                            cmd.ExecuteNonQuery();
+                            guest.Id = (int)cmd.Parameters["@Id"].Value;
+                        }
+                        catch (Exception e)
+                        {
+                            MessageBox.Show(e.Message);
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message);
+                }
+            }
         }
 
         private void CreateTableReservations(Reservation reservation)
@@ -430,7 +466,12 @@ namespace RestaurantLibrary.DataAccess
             List<DinnerTable> tablesToDeleteFromDB = oldTableList;
             List<DinnerTable> tablesToAddToDB = newTableList;
 
-            // Remove all tables from the old list that are being used in the new list. The remaining tables should be deleted from the database.
+            //foreach (var table in newTableList)
+            //{
+            //    CreateSingleTableReservation(reservation.Id, table);
+            //}
+
+            // Remove all tables from the old list that are being used in the new list.The remaining tables should be deleted from the database.
             foreach (var table in newTableList)
             {
                 tablesToDeleteFromDB.Remove(table);
@@ -453,7 +494,7 @@ namespace RestaurantLibrary.DataAccess
 
         private void DeleteSingleTableReservation(int reservationId, DinnerTable dinnerTable)
         {
-            string sp = "sp_dinner_tables_delete";
+            string sp = "sp_table_reservations_delete";
 
             using (SqlConnection conn = new SqlConnection(GlobalConfig.ConnString(db)))
             {
@@ -478,7 +519,7 @@ namespace RestaurantLibrary.DataAccess
 
         private void CreateSingleTableReservation(int reservationId, DinnerTable dinnerTable)
         {
-            string sp = "sp_dinner_tables_insert";
+            string sp = "sp_table_reservations_insert";
 
             using (SqlConnection conn = new SqlConnection(GlobalConfig.ConnString(db)))
             {
