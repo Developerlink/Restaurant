@@ -44,7 +44,7 @@ namespace RestaurantLibrary.Models
                 }
                 if (!string.IsNullOrEmpty(_LastName))
                 {
-                    fullName += _LastName;
+                    fullName += $" {_LastName}";
                 }
                 return fullName;
             }

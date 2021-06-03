@@ -190,7 +190,7 @@ namespace RestaurantWPF.ViewModels
             SelectedGuest = new Guest();
             LoadRestaurantData();
             LoadCommands();
-            LoadDummyData();
+            //LoadDummyData();
         }
 
         private void LoadRestaurantData()
@@ -298,12 +298,24 @@ namespace RestaurantWPF.ViewModels
                 // Whether guest is null or not does not affect the reservation itself. 
                 conn.CreateReservation(CurrentReservation);
                 MessageBox.Show("Your reservation has been saved!");
+                ClearAll();
             }
             else
             {
                 MessageBox.Show(result);
             }
 
+        }
+
+        private void ClearAll()
+        {
+            SelectedGuest.FirstName = "";
+            SelectedGuest.LastName = "";
+            SelectedArrivalStatus = ArrivalStatuses[0];
+            SelectedWantedSeats = 0;
+            SelectedTimeIn = new TimeUnit();
+            SelectedReservedTables.Clear();
+            UpdateCurrentFreeTables();
         }
 
         private bool CanCreateReservation(object obj)

@@ -302,10 +302,22 @@ namespace RestaurantLibrary.DataAccess
                             while (reader.Read())
                             {
                                 Guest guest = new Guest();
-                                guest.Id = reader.GetInt32(0);
-                                guest.FirstName = reader.GetString(1);
-                                guest.LastName = reader.GetString(2);
-                                guest.PhoneNumber = reader.GetInt32(3);
+                                if (!reader.IsDBNull(0))
+                                {
+                                    guest.Id = reader.GetInt32(0);
+                                }
+                                if (!reader.IsDBNull(1))
+                                {
+                                    guest.FirstName = reader.GetString(1);
+                                }
+                                if (!reader.IsDBNull(2))
+                                {
+                                    guest.LastName = reader.GetString(2);
+                                }
+                                if (!reader.IsDBNull(3))
+                                {
+                                    guest.PhoneNumber = reader.GetInt32(3);
+                                }
 
                                 ArrivalStatus arrivalStatus = new ArrivalStatus();
                                 arrivalStatus.Id = reader.GetInt32(4);
@@ -330,7 +342,7 @@ namespace RestaurantLibrary.DataAccess
                         }
                         catch (Exception e)
                         {
-                            MessageBox.Show(e.Message);
+                            MessageBox.Show($"GetReservations: {e.Message}");
                         }
                     }
                 }
@@ -466,30 +478,30 @@ namespace RestaurantLibrary.DataAccess
             List<DinnerTable> tablesToDeleteFromDB = oldTableList;
             List<DinnerTable> tablesToAddToDB = newTableList;
 
-            //foreach (var table in newTableList)
-            //{
-            //    CreateSingleTableReservation(reservation.Id, table);
-            //}
-
-            // Remove all tables from the old list that are being used in the new list.The remaining tables should be deleted from the database.
             foreach (var table in newTableList)
-            {
-                tablesToDeleteFromDB.Remove(table);
-            }
-            foreach (var table in tablesToDeleteFromDB)
-            {
-                DeleteSingleTableReservation(reservation.Id, table);
-            }
-
-            // Remove all tables from the new list that are being used in the old list. The remaining tables should be added to the database.
-            foreach (var table in oldTableList)
-            {
-                tablesToAddToDB.Remove(table);
-            }
-            foreach (var table in tablesToAddToDB)
             {
                 CreateSingleTableReservation(reservation.Id, table);
             }
+
+            // Remove all tables from the old list that are being used in the new list.The remaining tables should be deleted from the database.
+            //foreach (var table in newTableList)
+            //{
+            //    tablesToDeleteFromDB.Remove(table);
+            //}
+            //foreach (var table in tablesToDeleteFromDB)
+            //{
+            //    DeleteSingleTableReservation(reservation.Id, table);
+            //}
+
+            //// Remove all tables from the new list that are being used in the old list. The remaining tables should be added to the database.
+            //foreach (var table in oldTableList)
+            //{
+            //    tablesToAddToDB.Remove(table);
+            //}
+            //foreach (var table in tablesToAddToDB)
+            //{
+            //    CreateSingleTableReservation(reservation.Id, table);
+            //}
         }
 
         private void DeleteSingleTableReservation(int reservationId, DinnerTable dinnerTable)

@@ -104,6 +104,7 @@ namespace RestaurantWPF.ViewModels
             ArrivalStatuses = conn.GetArrivalStatuses();
             //ArrivalStatusButtons = new List<Button>();         
             SelectedArrivalStatus = new ArrivalStatus();
+            SelectedDateReservations = new ObservableCollection<Reservation>();
             UpdateSelectedDateReservations();
             LoadCommands();
 
